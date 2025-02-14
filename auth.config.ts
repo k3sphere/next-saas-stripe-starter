@@ -12,7 +12,14 @@ export default {
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
     EmailProvider({
-      server: process.env.EMAIL_SERVER,
+      server: {
+        host: "email-smtp.us-east-1.amazonaws.com",
+        port: 587,
+        auth: {
+          user: process.env.SMTP_USERNAME, // Set this in .env
+          pass: process.env.SMTP_PASSWORD, // Set this in .env
+        },
+      },
       from: process.env.EMAIL_FROM
     }),
   ],
