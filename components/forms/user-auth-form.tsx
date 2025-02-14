@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
+//import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -14,6 +14,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Icons } from "@/components/shared/icons";
+
+import { useSession } from "next-auth/react"
+import { signIn } from "next-auth/webauthn"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: string;
@@ -32,6 +35,8 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false);
   const searchParams = useSearchParams();
+  const { data: session, update, status } = useSession()
+ 
 
   async function onSubmit(data: FormData) {
     setIsLoading(true);
@@ -57,36 +62,15 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid gap-2">
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder="name@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading || isGoogleLoading}
-              {...register("email")}
-            />
-            {errors?.email && (
-              <p className="px-1 text-xs text-red-600">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
-          <button className={cn(buttonVariants())} disabled={isLoading}>
-            {isLoading && (
-              <Icons.spinner className="mr-2 size-4 animate-spin" />
-            )}
-            {type === "register" ? "Sign Up with Email" : "Sign In with Email"}
+      <div>
+        {status === "authenticated" ? (
+          <button onClick={() => signIn("passkey", { action: "register" })}>
+            Register new Passkey
           </button>
-        </div>
-      </form>
+        ) : status === "unauthenticated" ? (
+          <button onClick={() => signIn("passkey")}>Sign in with Passkey</button>
+        ) : null}
+      </div>
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
