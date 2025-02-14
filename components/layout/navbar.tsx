@@ -115,16 +115,17 @@ export function NavBar({ scroll = false }: NavBarProps) {
               </Button>
             </Link>
           ) : status === "unauthenticated" ? (
-            <Button
-              className="hidden gap-2 px-5 md:flex"
-              variant="default"
-              size="sm"
-              rounded="full"
-              onClick={() => setShowSignInModal(true)}
-            >
-              <span>Sign In</span>
-              <Icons.arrowRight className="size-4" />
-            </Button>
+            <Link href="/login" passHref>
+              <Button
+                className="hidden gap-2 px-5 md:flex"
+                variant="default"
+                size="sm"
+                rounded="full"
+              >
+                <span>Sign In</span>
+                <Icons.arrowRight className="size-4" />
+              </Button>
+            </Link>
           ) : (
             <Skeleton className="hidden h-9 w-28 rounded-full lg:flex" />
           )}
