@@ -63,11 +63,7 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <div>
-        {status === "authenticated" ? (
-          <button onClick={() => signIn("passkey", { action: "register" })}>
-            Register new Passkey
-          </button>
-        ) : status === "unauthenticated" ? (
+        {status === "authenticated" ? null : status === "unauthenticated" ? (
           <button onClick={() => signIn("passkey")}>Sign in with Passkey</button>
         ) : null}
       </div>
