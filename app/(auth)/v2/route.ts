@@ -4,7 +4,7 @@ import jwksClient from 'jwks-rsa';
 
 // Replace with your Keycloak Realm details
 const KEYCLOAK_REALM = 'k3sphere';
-const KEYCLOAK_URL = `https://auth.k3sphere.com/realms/${KEYCLOAK_REALM}`;
+const KEYCLOAK_URL = `https://auth.k3sphere.com/realms/${KEYCLOAK_REALM}/protocol/openid-connect/token`;
 const JWKS_URL = `${KEYCLOAK_URL}/protocol/openid-connect/certs`;
 
 // Setup JWKS client for Keycloak
