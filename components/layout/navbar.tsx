@@ -3,7 +3,7 @@
 import { useContext } from "react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 import { docsConfig } from "@/config/docs";
 import { marketingConfig } from "@/config/marketing";
@@ -115,17 +115,18 @@ export function NavBar({ scroll = false }: NavBarProps) {
               </Button>
             </Link>
           ) : status === "unauthenticated" ? (
-            <Link href="/login" passHref>
               <Button
                 className="hidden gap-2 px-5 md:flex"
                 variant="default"
                 size="sm"
                 rounded="full"
+                onClick={() => {
+                  signIn("keycloak");
+                }}
               >
                 <span>Sign In</span>
                 <Icons.arrowRight className="size-4" />
               </Button>
-            </Link>
           ) : (
             <Skeleton className="hidden h-9 w-28 rounded-full lg:flex" />
           )}
