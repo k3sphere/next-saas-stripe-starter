@@ -4,7 +4,7 @@ import jwksClient from 'jwks-rsa';
 
 // Replace with your Keycloak details
 const KEYCLOAK_REALM = 'k3sphere';
-const KEYCLOAK_CLIENT_ID = 'docker-registry'; // Use your client ID
+const KEYCLOAK_CLIENT_ID = 'k3sphere'; // Use your client ID
 const KEYCLOAK_BASE_URL = 'https://auth.k3sphere.com';
 const KEYCLOAK_AUTH_URL = `${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/auth`;
 const JWKS_URL = `${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/certs`;
@@ -45,9 +45,13 @@ export async function GET(req: NextRequest) {
   let authHeader = req.headers.get('Authorization') || req.headers.get('authorization');
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    // Redirect to Keycloak for authentication
-    const redirectUrl = `${KEYCLOAK_AUTH_URL}?client_id=${KEYCLOAK_CLIENT_ID}&response_type=token`;
-    return NextResponse.redirect(redirectUrl);
+
+    return new NextResponse('Unauthorized', {
+        status: 401,
+        headers: {
+            'WWW-Authenticate': `Bearer realm="${KEYCLOAK_AUTH_URL}?client_id=${KEYCLOAK_CLIENT_ID}&response_type=token", service="k3sphere-docker-registry"`,
+        },
+    });
   }
 
   const token = authHeader.split(' ')[1];
