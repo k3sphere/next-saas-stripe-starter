@@ -41,8 +41,11 @@ function getKey(header: jwt.JwtHeader, callback: jwt.SigningKeyCallback) {
 }
 
 export async function GET(req: NextRequest) {
-    const authHeader = req.headers.get('authorization');
-
+    let authHeader = req.headers.get('authorization');
+    if (!authHeader) {
+        authHeader = req.headers.get('Authorization');
+      }
+      console.log(authHeader);
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         // Return a 401 Unauthorized with a Docker-compatible challenge
         return new NextResponse('Unauthorized', {
