@@ -10,6 +10,25 @@ const JWKS_URL = `${KEYCLOAK_URL}/protocol/openid-connect/certs`;
 // Setup JWKS client for Keycloak
 const client = jwksClient({ jwksUri: JWKS_URL });
 
+
+async function verifyToken(token: string): Promise<NextResponse> {
+  try {
+      const decoded = await new Promise((resolve, reject) => {
+          jwt.verify(token, getKey, { algorithms: ['RS256'] }, (err, decoded) => {
+              if (err) reject(err);
+              else resolve(decoded);
+          });
+      });
+
+      return NextResponse.json({
+          message: 'Welcome to the private Docker Registry!',
+          user: decoded,
+      });
+  } catch {
+      return new NextResponse('Forbidden', { status: 403 });
+  }
+}
+
 function getKey(header: jwt.JwtHeader, callback: jwt.SigningKeyCallback) {
     client.getSigningKey(header.kid, (err, key) => {
         if (err) {
@@ -36,19 +55,6 @@ export async function GET(req: NextRequest) {
 
     const token = authHeader.split(' ')[1];
 
-    return new Promise((resolve) => {
-        jwt.verify(token, getKey, { algorithms: ['RS256'] }, (err, decoded) => {
-            if (err) {
-                resolve(new NextResponse('Forbidden', { status: 403 }));
-                return;
-            }
-
-            resolve(
-                NextResponse.json({
-                    message: 'Welcome to the private Docker Registry!',
-                    user: decoded,
-                })
-            );
-        });
-    });
+    return await verifyToken(token);
+    
 }
