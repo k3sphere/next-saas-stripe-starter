@@ -27,7 +27,7 @@ export default function ProjectSwitcher({
   large?: boolean;
 }) {
   const { data: session, status } = useSession();
-  const {clusters, selected} = useCluster();
+  const {clusters, selected, setValue} = useCluster();
   const [openPopover, setOpenPopover] = useState(false);
   if (!clusters || status === "loading") {
     return <ProjectSwitcherPlaceholder />;
@@ -70,6 +70,7 @@ export default function ProjectSwitcher({
           <ProjectList
             selected={selected}
             projects={clusters}
+            onSelect={setValue}
             setOpenPopover={setOpenPopover}
           />
         </PopoverContent>
@@ -82,36 +83,38 @@ function ProjectList({
   selected,
   projects,
   setOpenPopover,
+  onSelect,
 }: {
   selected: ProjectType;
   projects: ProjectType[];
   setOpenPopover: (open: boolean) => void;
+  onSelect: (value: any) => void;
 }) {
 
   const router = useRouter();
   return (
     <div className="flex flex-col gap-1">
-      {projects.map(({ id, name }) => (
+      {projects.map((project) => (
         <Link
-          key={id}
+          key={project.id}
           className={cn(
             buttonVariants({ variant: "ghost" }),
             "relative flex h-9 items-center gap-3 p-3 text-muted-foreground hover:text-foreground",
           )}
           href="#"
-          onClick={() => setOpenPopover(false)}
+          onClick={() => {onSelect(project);setOpenPopover(false)}}
         >
           <div className={cn("size-3 shrink-0 rounded-full")} />
           <span
             className={`flex-1 truncate text-sm ${
-              selected?.id === id
+              selected?.id === project.id
                 ? "font-medium text-foreground"
                 : "font-normal"
             }`}
           >
-            {name}
+            {project.name}
           </span>
-          {selected?.id === id && (
+          {selected?.id === project.id && (
             <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-foreground">
               <Check size={18} aria-hidden="true" />
             </span>

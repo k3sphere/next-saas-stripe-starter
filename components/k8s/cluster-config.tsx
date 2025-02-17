@@ -58,9 +58,15 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSaving(true);
-    const response = {success: true}
+    const response = await fetch(`/api/cluster`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data)
+    });
     setIsSaving(false);
-    if (!response?.success) {
+    if (response.status != 200) {
       return toast({
         title: "Something went wrong.",
         description: "Your cluster config was not saved. Please try again.",
