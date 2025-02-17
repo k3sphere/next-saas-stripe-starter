@@ -14,8 +14,8 @@ export interface Cluster {
   name: string;
   status: keyof ClusterStatus | null;
   location: string;
-  authUserId: string;
-  plan: ClusterPlan | null;
+  userId: string;
+  apiKey: string | null;
   network: string | null;
   createdAt: Date;
   updatedAt: Date;

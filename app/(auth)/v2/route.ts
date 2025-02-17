@@ -1,60 +1,31 @@
+// app/api/v2/[...slug]/route.js
 import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
-import jwksClient from 'jwks-rsa';
-
-// Replace with your Keycloak details
-const KEYCLOAK_REALM = 'k3sphere';
-const KEYCLOAK_CLIENT_ID = 'k3sphere'; // Use your client ID
-const KEYCLOAK_BASE_URL = 'https://auth.k3sphere.com';
-const KEYCLOAK_AUTH_URL = `${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/auth`;
-const JWKS_URL = `${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/certs`;
-
-// Setup JWKS client for Keycloak
-const client = jwksClient({ jwksUri: JWKS_URL });
-
-async function verifyToken(token: string): Promise<NextResponse> {
-  try {
-    const decoded = await new Promise((resolve, reject) => {
-      jwt.verify(token, getKey, { algorithms: ['RS256'] }, (err, decoded) => {
-        if (err) reject(err);
-        else resolve(decoded);
-      });
-    });
-
-    return NextResponse.json({
-      message: 'Welcome to the private Docker Registry!',
-      user: decoded,
-    });
-  } catch {
-    return new NextResponse('Forbidden', { status: 403 });
-  }
-}
-
-function getKey(header: jwt.JwtHeader, callback: jwt.SigningKeyCallback) {
-  client.getSigningKey(header.kid, (err, key) => {
-    if (err) {
-      callback(err, null);
-      return;
-    }
-    const signingKey = key?.getPublicKey();
-    callback(null, signingKey);
-  });
-}
-
 export async function GET(req: NextRequest) {
-  let authHeader = req.headers.get('Authorization') || req.headers.get('authorization');
+    // Return 401 Unauthorized with required headers
+    let authHeader = req.headers.get('authorization');
+    if (!authHeader) {
+      authHeader = req.headers.get('Authorization');
+    }
+    console.log(authHeader);
+    if (authHeader && authHeader.startsWith('Basic ')) {
+      //const parsed = await verifyToken(authHeader.substring(7));
+      const isExpired = false;
+      if(!isExpired) {
+        return NextResponse.json({
+          'content-type': 'application/json',
+          'docker-distribution-api-version': 'registry/2.0',
+        });
+      }else {
+        return NextResponse.json({ message: 'Authentication failed' }, { status: 401 });
+      }
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    }
 
-    return new NextResponse('Unauthorized', {
+    return new NextResponse("Unauthorized", {
         status: 401,
         headers: {
-            'WWW-Authenticate': `Bearer realm="${KEYCLOAK_AUTH_URL}?client_id=${KEYCLOAK_CLIENT_ID}&response_type=token", service="k3sphere-docker-registry"`,
+            "Content-Type": "application/json",
+            "Docker-Distribution-API-Version": "registry/2.0",
         },
     });
-  }
-
-  const token = authHeader.split(' ')[1];
-
-  return await verifyToken(token);
 }
