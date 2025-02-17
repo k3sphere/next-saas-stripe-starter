@@ -26,6 +26,7 @@ export async function GET(req: NextRequest) {
         headers: {
             "Content-Type": "application/json",
             "Docker-Distribution-API-Version": "registry/2.0",
+            "WWW-Authenticate": 'Basic realm="Docker Registry"',
         },
     });
 }
