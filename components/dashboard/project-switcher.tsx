@@ -16,8 +16,8 @@ import { useRouter } from "next/navigation";
 import useCluster from "@/hooks/use-cluster";
 
 type ProjectType = {
-  title: string;
-  slug: string;
+  id: string
+  name: string
   color: string;
 };
 
@@ -56,7 +56,7 @@ export default function ProjectSwitcher({
                     large ? "w-full" : "max-w-[80px]",
                   )}
                 >
-                  {selected?selected.slug:"No Cluster"}
+                  {selected?selected.name:"No Cluster"}
                 </span>
               </div>
             </div>
@@ -91,9 +91,9 @@ function ProjectList({
   const router = useRouter();
   return (
     <div className="flex flex-col gap-1">
-      {projects.map(({ slug, color }) => (
+      {projects.map(({ id, name }) => (
         <Link
-          key={slug}
+          key={id}
           className={cn(
             buttonVariants({ variant: "ghost" }),
             "relative flex h-9 items-center gap-3 p-3 text-muted-foreground hover:text-foreground",
@@ -101,17 +101,17 @@ function ProjectList({
           href="#"
           onClick={() => setOpenPopover(false)}
         >
-          <div className={cn("size-3 shrink-0 rounded-full", color)} />
+          <div className={cn("size-3 shrink-0 rounded-full")} />
           <span
             className={`flex-1 truncate text-sm ${
-              selected.slug === slug
+              selected?.id === id
                 ? "font-medium text-foreground"
                 : "font-normal"
             }`}
           >
-            {slug}
+            {name}
           </span>
-          {selected.slug === slug && (
+          {selected?.id === id && (
             <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-foreground">
               <Check size={18} aria-hidden="true" />
             </span>

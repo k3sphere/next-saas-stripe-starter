@@ -9,7 +9,7 @@ const useCluster = () => {
   useEffect(() => {
     // Retrieve from localStorage
     console.log("fetch clusters")
-     fetch(`/api/clusters`, {
+     fetch(`/api/cluster`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -18,9 +18,13 @@ const useCluster = () => {
             // delay to allow for the route change to complete
             const result = await res.json()
             setClusters(result);
+            if(result.length > 0) {
+              setSelected(result[0])
+            }
+            
           }
       });
-  });
+  }, []);
 
   const setValue = (value: any) => {
     // Save state
