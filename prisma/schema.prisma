@@ -60,6 +60,7 @@ model User {
   role          UserRole  @default(USER)
 
   accounts Account[]
+  clusters K8sCluster[]
   sessions Session[]
   Authenticator Authenticator[]
 
@@ -92,4 +93,22 @@ model Authenticator {
   transports           String?
  
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map(name: "authenticators")
+}
+
+
+model K8sCluster {
+  id                String   @id @default(cuid())
+  userId            String
+  name       String
+  location   String
+  clientId   String
+  apiKey     String
+  network    String?
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @default(now())
+  delete     Boolean?          @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map(name: "clusters")
 }

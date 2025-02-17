@@ -12,6 +12,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useRouter } from "next/navigation";
+import useCluster from "@/hooks/use-cluster";
 
 type ProjectType = {
   title: string;
@@ -19,29 +21,15 @@ type ProjectType = {
   color: string;
 };
 
-const projects: ProjectType[] = [
-  {
-    title: "Project 1",
-    slug: "project-number-one",
-    color: "bg-red-500",
-  },
-  {
-    title: "Project 2",
-    slug: "project-number-two",
-    color: "bg-blue-500",
-  },
-];
-const selected: ProjectType = projects[1];
-
 export default function ProjectSwitcher({
   large = false,
 }: {
   large?: boolean;
 }) {
   const { data: session, status } = useSession();
+  const {clusters, selected} = useCluster();
   const [openPopover, setOpenPopover] = useState(false);
-
-  if (!projects || status === "loading") {
+  if (!clusters || status === "loading") {
     return <ProjectSwitcherPlaceholder />;
   }
 
@@ -58,7 +46,7 @@ export default function ProjectSwitcher({
               <div
                 className={cn(
                   "size-3 shrink-0 rounded-full",
-                  selected.color,
+                  selected?.color,
                 )}
               />
               <div className="flex items-center space-x-3">
@@ -68,7 +56,7 @@ export default function ProjectSwitcher({
                     large ? "w-full" : "max-w-[80px]",
                   )}
                 >
-                  {selected.slug}
+                  {selected?selected.slug:"No Cluster"}
                 </span>
               </div>
             </div>
@@ -81,7 +69,7 @@ export default function ProjectSwitcher({
         <PopoverContent align="start" className="max-w-60 p-2">
           <ProjectList
             selected={selected}
-            projects={projects}
+            projects={clusters}
             setOpenPopover={setOpenPopover}
           />
         </PopoverContent>
@@ -99,6 +87,8 @@ function ProjectList({
   projects: ProjectType[];
   setOpenPopover: (open: boolean) => void;
 }) {
+
+  const router = useRouter();
   return (
     <div className="flex flex-col gap-1">
       {projects.map(({ slug, color }) => (
@@ -132,12 +122,13 @@ function ProjectList({
         variant="outline"
         className="relative flex h-9 items-center justify-center gap-2 p-2"
         onClick={() => {
-          setOpenPopover(false);
+          setOpenPopover(false);router.push("/dashboard/cluster/new")
         }}
       >
         <Plus size={18} className="absolute left-2.5 top-2" />
-        <span className="flex-1 truncate text-center">New Project</span>
+        <span className="flex-1 truncate text-center">New Cluster</span>
       </Button>
+     
     </div>
   );
 }
