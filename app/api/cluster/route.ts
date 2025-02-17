@@ -31,6 +31,11 @@ export const GET = auth(async (req) => {
       where: {
         userId: currentUser.id,
       },
+      select: {
+        id: true,
+        name: true,
+        location: true,
+      },
     });
     return new Response(JSON.stringify(clusters), { status: 200 });
   } catch (error) {
