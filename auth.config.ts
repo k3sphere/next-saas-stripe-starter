@@ -14,4 +14,5 @@ export default {
     Passkey,
   ],
   experimental: { enableWebAuthn: true },
+  debug: process.env.NODE_ENV !== "production"
 } satisfies NextAuthConfig;
