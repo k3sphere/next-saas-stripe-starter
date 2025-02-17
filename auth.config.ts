@@ -13,4 +13,5 @@ export default {
     }),
     Passkey,
   ],
+  experimental: { enableWebAuthn: true },
 } satisfies NextAuthConfig;
