@@ -7,7 +7,7 @@ import { TableBody, TableCell, TableRow } from "../ui/table";
 // import { formatDate } from "~/lib/utils";
 
 interface NodeItemProps {
-  node: Pick<ClusterNode, "id" | "name" | "ip" >;
+  node: Pick<ClusterNode, "id" | "name" | "ip" | "port" >;
 }
 
 export function NodeItem({ node }: NodeItemProps) {
@@ -17,7 +17,7 @@ export function NodeItem({ node }: NodeItemProps) {
         <TableCell className="font-medium">
           <Link
             target="_blank"
-            href={`https://ssh.k3sphere.com/${String(node.id)}`}
+            href={`https://ssh.k3sphere.com/${String(node.id)}/${String(node.ip)}/${String(node.port)}`}
             className="font-semibold hover:underline"
           >
             {node.name}
