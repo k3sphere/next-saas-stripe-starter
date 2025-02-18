@@ -15,15 +15,24 @@ export const POST = auth(async (req) => {
   if (authHeader && authHeader.startsWith('Basic ')) {
     const base64Credentials = authHeader.substring(6);
     const decoded = Buffer.from(base64Credentials, 'base64').toString('utf-8');
-    const [username, password] = decoded.split(':');
+    const [clusterId, password] = decoded.split(':');
 
-    if (!username || !password) {
+    if (!clusterId || !password) {
       return NextResponse.json({ message: 'Invalid credentials' }, { status: 401 });
     }
 
     // Query database using Prisma
     const user = await prisma.k8sCluster.findUnique({
-      where: { id: username  },
+      where: { id: clusterId  },
+      select: {
+        apiKey: true,
+        relays: {
+          select: {
+            id: true,
+            relay: true,
+          },
+        },
+      }
     });
 
     if (!user || user.apiKey !== password) {
@@ -32,14 +41,14 @@ export const POST = auth(async (req) => {
 
 
 
-    const { id, ip, region, name, vlan, type, gateway, port, publicIp } =
+    const { id, ip, name, vlan, gateway, port, publicIp, username } =
     await req.json();
 
 
   //const cert = issueCertificate(team, name)
   let gatewayId: string = "";
   if (gateway) {
-    const gatewayEntity = await getMachine(username, gateway);
+    const gatewayEntity = await getMachine(clusterId, gateway);
     if (gatewayEntity) {
       gatewayId = gatewayEntity.id;
         await registerMachine(
@@ -47,19 +56,13 @@ export const POST = auth(async (req) => {
           ip,
           name,
           gatewayEntity.vlan,
-          type,
           gatewayId,
           port,
           publicIp,
-          user.id,
+          clusterId,
           username,
-          []
         );
-      } else {
-        return NextResponse.json({
-          error: "invalid team",
-        });
-      }
+
 
       const relay = `/ip4/${gatewayEntity.publicIp}/tcp/11211/p2p/${gatewayEntity.id}`;
       console.log(relay);
@@ -75,44 +78,30 @@ export const POST = auth(async (req) => {
       });
     }
   } else {
-    const foundServers = await getServers(cluster);
-    const url = foundServers.map((srv) => srv.url).join(",");
+    const foundServers = user.relays;
+    const url = foundServers.map((srv) => srv.relay.url).join(",");
     const rawToken = id + ":" + ip;
-    if (team != null && team.id != null) {
       await registerMachine(
         id,
         ip,
-        region,
         name,
         vlan,
-        type,
         null,
         port,
         publicIp,
-        user.id,
-        team.id,
-        foundServers
+        clusterId,
+        username,
       );
-    } else {
-      return NextResponse.json({
-        error: "invalid team",
-      });
-    }
+
 
     return NextResponse.json({
       relay: url,
-      token: await encrypt(rawToken, "mysecretkey"),
-      swarmKey,
+      token: "",
       vlan,
     });
   }
 
-    
-
-    return NextResponse.json({
-      'content-type': 'application/json',
-      'docker-distribution-api-version': 'registry/2.0',
-    });
+ 
   }
 
   return new NextResponse("Unauthorized", {
@@ -133,3 +122,9 @@ async function getMachine(username: string, gateway: any) {
     }
   })
 }
+function registerMachine(id: string, ip: string, name: string, vlan: string, gatewayId: string | null, port: number, publicIp: string | null, clusterId: string, username: string | null) {
+   prisma.machine.create({data: {
+    id,ip,name,vlan,gatewayId,port,publicIp,clusterId, username: username?username:""
+   }})
+}
+
