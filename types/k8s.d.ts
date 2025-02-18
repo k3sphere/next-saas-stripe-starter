@@ -9,6 +9,24 @@ interface ClusterStatus {
 
 type ClusterPlan = "FREE" | "BUSINESS" | "PRO";
 
+export interface ClusterRelay {
+  relay: Relay;
+}
+
+export interface Relay {
+  ip: string;
+}
+
+export interface ClusterNode {
+  id:         String
+  name:       String
+  port:       Int
+  username:   String
+  ip:         String
+  publicIp?:   String
+  gateway?:    Node
+}
+
 export interface Cluster {
   id: string;
   name: string;
@@ -21,6 +39,7 @@ export interface Cluster {
   createdAt: Date;
   updatedAt: Date;
   delete: boolean | null;
+  relays: ClusterRelay[];
 }
 
 export type ClustersArray = Cluster[] | undefined;

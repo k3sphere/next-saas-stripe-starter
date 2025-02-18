@@ -11,4 +11,16 @@ export default {
       issuer: process.env.KEYCLOAK_ISSUER,
     }),
   ],
+  cookies: {
+    sessionToken: {
+      name: `authjs.session-token`,
+      options: {
+        domain: ".k3sphere.com", // Allows sharing cookies across subdomains
+        path: "/",
+        secure: true,
+        httpOnly: true,
+        sameSite: "none",
+      },
+    },
+  },
 } satisfies NextAuthConfig;

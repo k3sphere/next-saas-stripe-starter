@@ -1,32 +1,33 @@
 import Link from "next/link";
 
-import type { Cluster } from "@/types/k8s";
+import type { Cluster, ClusterNode } from "@/types/k8s";
 import { TableBody, TableCell, TableRow } from "../ui/table";
 
 // import { ClusterOperations } from "~/components/k8s/cluster-operation";
 // import { formatDate } from "~/lib/utils";
 
-interface ClusterItemProps {
-  cluster: Pick<Cluster, "id" | "name" | "location" | "plan" | "updatedAt">;
+interface NodeItemProps {
+  node: Pick<ClusterNode, "id" | "name" | "ip" >;
 }
 
-export function ClusterItem({ cluster }: ClusterItemProps) {
+export function NodeItem({ node }: NodeItemProps) {
   return (
     <TableBody className="divide-y divide-gray-100">
-      <TableRow key={String(cluster.id)}>
+      <TableRow key={String(node.id)}>
         <TableCell className="font-medium">
           <Link
-            href={`/editor/cluster/${String(cluster.id)}`}
+            target="_blank"
+            href={`https://ssh.k3sphere.com/${String(node.id)}`}
             className="font-semibold hover:underline"
           >
-            {cluster.name}
+            {node.name}
           </Link>
         </TableCell>
-        <TableCell className="text-left">{cluster.location}</TableCell>
+        <TableCell className="text-left">{node.ip}</TableCell>
         <TableCell className="text-left">
-          {cluster.updatedAt?.toDateString()}
+         
         </TableCell>
-        <TableCell className="text-left">{cluster.plan}</TableCell>
+        <TableCell className="text-left">{node.name}</TableCell>
         <TableCell className="text-left">RUNNING</TableCell>
         <TableCell className="text-right">
         </TableCell>

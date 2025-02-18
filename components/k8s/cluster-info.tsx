@@ -19,6 +19,9 @@ export function ClusterInfo() {
         if (res.status === 200) {
           // delay to allow for the route change to complete
           const result = await res.json() as Cluster
+          if(!result.relays) {
+            result.relays = []
+          }
           setCluster(result);
         }
     });
@@ -50,6 +53,16 @@ export function ClusterInfo() {
         <TableRow>
         <TableCell className="text-left">API Key</TableCell>
         <TableCell className="text-left">{cluster?.apiKey}</TableCell>
+        </TableRow>
+        <TableRow>
+        <TableCell className="text-left">Host IPs</TableCell>
+        <TableCell className="text-left">
+          {
+              cluster?.relays.map((item)=>{
+                return <p>{item.relay.ip} </p>
+              })
+          }
+        </TableCell>
         </TableRow>
         <TableRow>
         <TableCell className="text-right">
