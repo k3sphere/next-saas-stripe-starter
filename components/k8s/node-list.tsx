@@ -36,12 +36,12 @@ export function NodeList() {
                   <TableCaption>A list of your k8s cluster .</TableCaption>
                   <TableHeader>
                     <TableRow className="hover:bg-gray-50">
+                      <TableHead>ID</TableHead>
                       <TableHead className="w-[100px]">Name</TableHead>
-                      <TableHead>Location</TableHead>
+                      <TableHead>IP</TableHead>
                       <TableHead>UpdatedAt</TableHead>
                       <TableHead>Plan</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>ACTION</TableHead>
                     </TableRow>
                   </TableHeader>
                   {nodes.map((node) => (

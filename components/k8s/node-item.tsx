@@ -14,6 +14,9 @@ export function NodeItem({ node }: NodeItemProps) {
   return (
     <TableBody className="divide-y divide-gray-100">
       <TableRow key={String(node.id)}>
+        <TableCell className="text-left">
+        {node.id}
+        </TableCell>
         <TableCell className="font-medium">
           <Link
             target="_blank"
@@ -25,12 +28,10 @@ export function NodeItem({ node }: NodeItemProps) {
         </TableCell>
         <TableCell className="text-left">{node.ip}</TableCell>
         <TableCell className="text-left">
-         
         </TableCell>
         <TableCell className="text-left">{node.name}</TableCell>
         <TableCell className="text-left">RUNNING</TableCell>
-        <TableCell className="text-right">
-        </TableCell>
+
       </TableRow>
     </TableBody>
   );
