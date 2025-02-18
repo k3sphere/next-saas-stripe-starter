@@ -122,8 +122,8 @@ async function getMachine(username: string, gateway: any) {
     }
   })
 }
-function registerMachine(id: string, ip: string, name: string, vlan: string, gatewayId: string | null, port: number, publicIp: string | null, clusterId: string, username: string | null) {
-   prisma.machine.create({data: {
+async function registerMachine(id: string, ip: string, name: string, vlan: string, gatewayId: string | null, port: number, publicIp: string | null, clusterId: string, username: string | null) {
+   await prisma.machine.create({data: {
     id,ip,name,vlan,gatewayId,port,publicIp,clusterId, username: username?username:""
    }})
 }
