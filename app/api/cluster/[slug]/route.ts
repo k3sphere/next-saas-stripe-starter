@@ -23,6 +23,18 @@ export const GET = auth(async (req) => {
         userId: currentUser.id,
         id: slug
       },
+      select: {
+        id: true,
+        name: true,
+        location: true,
+        apiKey: true,
+        relays: {
+          select: {
+            id: true,
+            relay: true,
+          },
+        },
+      }
     });
     return new Response(JSON.stringify(cluster), { status: 200 });
   } catch (error) {
