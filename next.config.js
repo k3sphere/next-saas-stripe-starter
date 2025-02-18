@@ -25,14 +25,6 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["@prisma/client"],
   },
-  async rewrites() {
-    return [
-      {
-        source: "/clusters/:path*",
-        destination: "https://headlamp.vercel.app/clusters/:path*",
-      },
-    ];
-  },
 };
 
 module.exports = withContentlayer(nextConfig);
