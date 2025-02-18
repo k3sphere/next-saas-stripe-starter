@@ -31,7 +31,11 @@ export const GET = auth(async (req) => {
         relays: {
           select: {
             id: true,
-            relay: true,
+            relay: {
+              select: {
+                ip: true
+              }
+            },
           },
         },
       }
