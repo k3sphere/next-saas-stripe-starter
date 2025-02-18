@@ -28,8 +28,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/cluster/:path*",
-        destination: "https://headlamp.vercel.app/:path*",
+        source: "/clusters/:path*",
+        destination: "https://headlamp.vercel.app/clusters/:path*",
       },
     ];
   },
