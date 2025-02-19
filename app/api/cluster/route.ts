@@ -35,6 +35,7 @@ export const GET = auth(async (req) => {
         id: true,
         name: true,
         location: true,
+        publicKey: true,
       },
     });
     return new Response(JSON.stringify(clusters), { status: 200 });
