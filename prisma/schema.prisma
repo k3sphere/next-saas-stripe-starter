@@ -100,10 +100,14 @@ model Authenticator {
 model K8sCluster {
   id                String   @id @default(cuid())
   userId            String
-  name       String
+  name       String @unique
   location   String
   apiKey     String
   network    String?
+  publicKey  String?
+  ip         String?
+  host       String?
+  oidc       Boolean?          @default(false)
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @default(now())
   delete     Boolean?          @default(false)

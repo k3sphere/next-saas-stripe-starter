@@ -44,6 +44,15 @@ export const POST = auth(async (req) => {
     await req.json();
 
     console.log(ip, host, oidc, publicKey);
+    await prisma.k8sCluster.update({
+      where: { id: clusterId },
+      data: {
+        ip,
+        host,
+        oidc,
+        publicKey,
+      },
+    });
 
     return new NextResponse("OK", {
       status: 200,

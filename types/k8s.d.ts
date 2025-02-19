@@ -39,6 +39,9 @@ export interface Cluster {
   createdAt: Date;
   updatedAt: Date;
   delete: boolean | null;
+  host: string | null;
+  ip: string | null;
+  publicKey: string | null;
   relays: ClusterRelay[];
 }
 

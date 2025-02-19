@@ -56,7 +56,19 @@ export function ClusterInfo() {
         <TableCell className="text-left">{cluster?.apiKey}</TableCell>
         </TableRow>
         <TableRow>
-        <TableCell className="text-left">Host IPs</TableCell>
+        <TableCell className="text-left">Host</TableCell>
+        <TableCell className="text-left">{cluster?.host}</TableCell>
+        </TableRow>
+        <TableRow>
+        <TableCell className="text-left">IP</TableCell>
+        <TableCell className="text-left">{cluster?.ip}</TableCell>
+        </TableRow>
+        <TableRow>
+        <TableCell className="text-left">Public Key</TableCell>
+        <TableCell className="text-left">{cluster?.publicKey}</TableCell>
+        </TableRow>
+        <TableRow>
+        <TableCell className="text-left">Relay Servers</TableCell>
         <TableCell className="text-left">
           {
               cluster?.relays.map((item)=>{
