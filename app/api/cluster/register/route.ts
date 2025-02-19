@@ -43,7 +43,7 @@ export const POST = auth(async (req) => {
 
     const {  ip, host, oidc, publicKey } =
     await req.json();
-    const dns = await encrypt(`${host}:${ip}::6443`, process.env.ENCRYPTION_KEY!);
+    const dns = await encrypt(`${host}:${ip}:80:443`, process.env.ENCRYPTION_KEY!);
     console.log(ip, host, oidc, publicKey);
     await prisma.k8sCluster.update({
       where: { id: clusterId },
