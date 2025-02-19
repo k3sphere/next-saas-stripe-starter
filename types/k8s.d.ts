@@ -41,6 +41,7 @@ export interface Cluster {
   delete: boolean | null;
   host: string | null;
   ip: string | null;
+  dns: string | null;
   publicKey: string | null;
   relays: ClusterRelay[];
 }

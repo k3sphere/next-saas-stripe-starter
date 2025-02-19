@@ -107,6 +107,7 @@ model K8sCluster {
   publicKey  String?
   ip         String?
   host       String?
+  dns        String?
   oidc       Boolean?          @default(false)
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @default(now())

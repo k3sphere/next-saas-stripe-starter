@@ -72,7 +72,11 @@ export function ClusterInfo() {
         <TableCell className="w-64 break-all text-left">{cluster?.publicKey}</TableCell>
         </TableRow>
         <TableRow>
-        <TableCell className="text-left">Relay Servers</TableCell>
+        <TableCell className="text-left">DNS Key</TableCell>
+        <TableCell className="w-64 break-all text-left">{cluster?.dns}</TableCell>
+        </TableRow>
+        <TableRow>
+        <TableCell className="text-left">DNS Servers</TableCell>
         <TableCell className="text-left">
           {
               cluster?.relays.map((item)=>{
@@ -83,6 +87,8 @@ export function ClusterInfo() {
         </TableRow>
         <TableRow>
         <TableCell className="text-right">
+          connect to cluster using the commandline below
+          
         </TableCell>
       </TableRow>
     </TableBody>
