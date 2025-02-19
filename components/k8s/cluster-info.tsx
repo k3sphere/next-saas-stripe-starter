@@ -65,7 +65,7 @@ export function ClusterInfo() {
         </TableRow>
         <TableRow>
         <TableCell className="text-left">Public Key</TableCell>
-        <TableCell className="text-left">{cluster?.publicKey}</TableCell>
+        <TableCell className="w-64 break-all text-left">{cluster?.publicKey}</TableCell>
         </TableRow>
         <TableRow>
         <TableCell className="text-left">Relay Servers</TableCell>
