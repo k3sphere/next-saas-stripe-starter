@@ -45,7 +45,7 @@ export function ClusterInfo() {
         </TableRow>
         <TableRow>
         <TableCell className="text-left">API Endpoint</TableCell>
-        <TableCell className="text-left">{cluster?`https://${cluster.name}.findi.io`:""}</TableCell>
+        <TableCell className="text-left">{cluster?`https://${cluster.name}.k3sphere.io`:""}</TableCell>
         </TableRow>        
         <TableRow>
         <TableCell className="text-left">Location</TableCell>
