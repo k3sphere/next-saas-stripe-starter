@@ -4,6 +4,7 @@ import { Cluster } from "@/types/k8s";
 import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 export function ClusterInfo() {
   const [cluster, setCluster] = useState<Cluster|null>(null)
@@ -41,6 +42,21 @@ export function ClusterInfo() {
           >
             {cluster?.name}
           </Link>
+          <Button
+            className="font-semibold hover:underline"
+            onClick={async () => {
+              if(cluster) {
+                await fetch(`/api/cluster/${cluster.id}`, {
+                  method: "DELETE",
+                });
+                localStorage.removeItem("cluster");
+                window.location.reload();
+              }
+            }
+            }
+          >
+            Delete
+          </Button>
         </TableCell>
         </TableRow>
         <TableRow>

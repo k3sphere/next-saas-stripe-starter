@@ -74,3 +74,54 @@ export const POST = auth(async (req) => {
   }
 
 });
+
+
+
+export const DELETE = auth(async (req) => {
+  if (!req.auth) {
+    return new Response("Not authenticated", { status: 401 });
+  }
+
+  const currentUser = req.auth.user;
+  if (!currentUser) {
+    return new Response("Invalid user", { status: 401 });
+  }
+
+  const { pathname } = req.nextUrl;
+
+  const slug = pathname.split("/").pop(); // Get the last segment
+
+
+  try {
+    const cluster = await prisma.k8sCluster.delete({
+      where: {
+        userId: currentUser.id,
+        id: slug
+      },
+      select: {
+        id: true,
+        name: true,
+        location: true,
+        apiKey: true,
+        publicKey: true,
+        host: true,
+        ip: true,
+        dns: true,
+        relays: {
+          select: {
+            id: true,
+            relay: {
+              select: {
+                ip: true
+              }
+            },
+          },
+        },
+      }
+    });
+    return new Response(JSON.stringify(cluster), { status: 200 });
+  } catch (error) {
+    return new Response("Internal server error", { status: 500 });
+  }
+
+});
