@@ -33,12 +33,12 @@ const FormSchema = z.object({
       message: "name must be at least 2 characters.",
     })
     .max(32, { message: "name must be at most 32 characters." }),
-  location: z.enum(["China", "Hong Kong", "Singapore", "Tokyo", "US-West"]),
+  location: z.enum(["stockholm", "Hong Kong", "Singapore", "Tokyo", "US-West"]),
 });
 const isValidLocation = (
   location: string,
-): location is "China" | "Hong Kong" | "Singapore" | "Tokyo" | "US-West" => {
-  return ["China", "Hong Kong", "Singapore", "Tokyo", "US-West"].includes(
+): location is "stockholm" | "Hong Kong" | "Singapore" | "Tokyo" | "US-West" => {
+  return ["stockholm", "Hong Kong", "Singapore", "Tokyo", "US-West"].includes(
     location,
   );
 };
