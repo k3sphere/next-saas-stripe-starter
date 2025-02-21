@@ -30,6 +30,7 @@ export const GET = auth(async (req) => {
     const clusters = await prisma.k8sCluster.findMany({
       where: {
         userId: currentUser.id,
+        delete: false
       },
       select: {
         id: true,

@@ -93,32 +93,24 @@ export const DELETE = auth(async (req) => {
 
 
   try {
-    const cluster = await prisma.k8sCluster.delete({
+    const cluster = await prisma.k8sCluster.update({
       where: {
         userId: currentUser.id,
         id: slug
+      },
+      data: {
+        delete: true
       },
       select: {
         id: true,
         name: true,
         location: true,
-        apiKey: true,
-        publicKey: true,
         host: true,
+        delete: true,
         ip: true,
-        dns: true,
-        relays: {
-          select: {
-            id: true,
-            relay: {
-              select: {
-                ip: true
-              }
-            },
-          },
-        },
-      }
-    });
+        dns: true
+        }
+      });
     return new Response(JSON.stringify(cluster), { status: 200 });
   } catch (error) {
     return new Response("Internal server error", { status: 500 });
