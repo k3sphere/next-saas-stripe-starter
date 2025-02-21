@@ -102,7 +102,12 @@ function ProjectList({
             "relative flex h-9 items-center gap-3 p-3 text-muted-foreground hover:text-foreground",
           )}
           href="#"
-          onClick={() => {onSelect(project);setOpenPopover(false)}}
+          onClick={() => {
+            onSelect(project);
+            setOpenPopover(false);
+            window.location.reload();
+          }
+          }
         >
           <div className={cn("size-3 shrink-0 rounded-full")} />
           <span
@@ -125,7 +130,7 @@ function ProjectList({
         variant="outline"
         className="relative flex h-9 items-center justify-center gap-2 p-2"
         onClick={() => {
-          setOpenPopover(false);router.push("/dashboard/cluster/new");window.location.reload();
+          setOpenPopover(false);router.push("/dashboard/cluster/new");
         }}
       >
         <Plus size={18} className="absolute left-2.5 top-2" />
