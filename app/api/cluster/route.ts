@@ -63,6 +63,8 @@ export const POST = auth(async (req) => {
   
   try {
     const clusters = await prisma.k8sCluster.create({ data: { userId, name, location, apiKey}});
+    const relays = await prisma.relayServer.findMany({ where: { location}});
+    await prisma.clusterRelay.createMany({ data: relays.map((relay) => ({ clusterId: clusters.id, relayId: relay.id}))})  
     return new Response(JSON.stringify(clusters), { status: 200 });
   } catch (error) {
     console.log(error)

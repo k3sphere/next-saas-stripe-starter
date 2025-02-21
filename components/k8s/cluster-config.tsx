@@ -136,15 +136,16 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectGroup>
-                                  <SelectLabel>Select Region</SelectLabel>
-                                  <SelectItem value="China">China</SelectItem>
-                                  <SelectItem value="Hong Kong">
-                                    Hong Kong
-                                  </SelectItem>
-                                  <SelectItem value="Tokyo">Tokyo</SelectItem>
-                                  <SelectItem value="Singapore">
-                                    Singapore
-                                  </SelectItem>
+                                  <SelectLabel>America</SelectLabel>
+                                  <SelectItem value="newyork">New York</SelectItem>
+                                </SelectGroup>
+                                <SelectGroup>
+                                  <SelectLabel>Asia</SelectLabel>
+                                  <SelectItem value="tokyo">Tokyo</SelectItem>
+                                </SelectGroup>
+                                <SelectGroup>
+                                  <SelectLabel>Europe</SelectLabel>
+                                  <SelectItem value="stockholm">Stockholm</SelectItem>
                                 </SelectGroup>
                               </SelectContent>
                             </Select>
