@@ -42,6 +42,7 @@ export function ClusterInfo() {
           >
             {cluster?.name}
           </Link>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Button
             className="font-semibold hover:underline"
             onClick={async () => {
