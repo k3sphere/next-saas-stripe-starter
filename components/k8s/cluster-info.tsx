@@ -36,7 +36,7 @@ export function ClusterInfo() {
         <TableCell className="font-medium">
           <Link
             target="_blank"
-            href={`https://app.k3sphere.com/c/${String(cluster?.name)}`}
+            href={`https://app.k3sphere.com/c/${String(cluster?.id)}`}
             className="font-semibold hover:underline"
           >
             {cluster?.name}
