@@ -33,12 +33,12 @@ const FormSchema = z.object({
       message: "name must be at least 2 characters.",
     })
     .max(32, { message: "name must be at most 32 characters." }),
-  location: z.enum(["stockholm", "Hong Kong", "Singapore", "Tokyo", "US-West"]),
+  location: z.enum(["Stockholm", "Hong Kong", "Singapore", "Tokyo", "US-West"]),
 });
 const isValidLocation = (
   location: string,
-): location is "stockholm" | "Hong Kong" | "Singapore" | "Tokyo" | "US-West" => {
-  return ["stockholm", "Hong Kong", "Singapore", "Tokyo", "US-West"].includes(
+): location is "Stockholm" | "Hong Kong" | "Singapore" | "Tokyo" | "US-West" => {
+  return ["Stockholm", "Hong Kong", "Singapore", "Tokyo", "US-West"].includes(
     location,
   );
 };
@@ -145,7 +145,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                                 </SelectGroup>
                                 <SelectGroup>
                                   <SelectLabel>Europe</SelectLabel>
-                                  <SelectItem value="stockholm">Stockholm</SelectItem>
+                                  <SelectItem value="Stockholm">Stockholm</SelectItem>
                                 </SelectGroup>
                               </SelectContent>
                             </Select>

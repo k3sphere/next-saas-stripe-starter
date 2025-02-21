@@ -125,7 +125,7 @@ function ProjectList({
         variant="outline"
         className="relative flex h-9 items-center justify-center gap-2 p-2"
         onClick={() => {
-          setOpenPopover(false);router.push("/dashboard/cluster/new")
+          setOpenPopover(false);router.push("/dashboard/cluster/new");window.location.reload();
         }}
       >
         <Plus size={18} className="absolute left-2.5 top-2" />
