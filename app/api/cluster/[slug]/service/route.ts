@@ -10,9 +10,8 @@ const checkApiKey = (req: Request, token: string|null) => {
 export const GET = auth(async (req) => {
 
   const { pathname } = req.nextUrl;
-
-  const slug = pathname.split("/").pop(); // Get the last segment
-  
+  const segments = pathname.split("/")
+  const slug = segments[segments.length-2]; // Get the last segment
 
 
   try {
@@ -47,8 +46,9 @@ export const GET = auth(async (req) => {
     if (!cluster) {
       return new Response("Cluster not found", { status: 404 });
     }
-    
-
+    if (!checkApiKey(req, cluster.publicKey)) {
+      return new Response("Unauthorized", { status: 401 });
+    }
     return new Response(JSON.stringify(cluster), { status: 200 });
   } catch (error) {
     return new Response("Internal server error", { status: 500 });
@@ -62,7 +62,8 @@ export const POST = auth(async (req) => {
 
   const { pathname } = req.nextUrl;
 
-  const slug = pathname.split("/").pop(); // Get the last segment
+  const segments = pathname.split("/")
+  const slug = segments[segments.length-2]; // Get the last segment
 
 
   try {
@@ -114,7 +115,8 @@ export const DELETE = auth(async (req) => {
 
   const { pathname } = req.nextUrl;
 
-  const slug = pathname.split("/").pop(); // Get the last segment
+  const segments = pathname.split("/")
+  const slug = segments[segments.length-2]; // Get the last segment
 
 
   try {
