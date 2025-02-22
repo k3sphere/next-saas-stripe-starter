@@ -60,7 +60,7 @@ export const GET = auth(async (req) => {
 
 export const POST = auth(async (req) => {
 
-
+  console.log(req);
   const { pathname } = req.nextUrl;
 
   const segments = pathname.split("/")
@@ -113,7 +113,7 @@ export const POST = auth(async (req) => {
 
 
 export const DELETE = auth(async (req) => {
-
+  console.log(req);
   const { pathname } = req.nextUrl;
 
   const segments = pathname.split("/")
