@@ -21,7 +21,10 @@ export const GET = auth(async (req) => {
     const cluster = await prisma.k8sCluster.findFirst({
       where: {
         userId: currentUser.id,
-        id: slug
+        OR: [
+          { id: slug },
+          { name: slug }
+        ]
       },
       select: {
         id: true,
