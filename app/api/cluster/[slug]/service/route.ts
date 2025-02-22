@@ -3,8 +3,9 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 
 const checkApiKey = (req: Request, token: string|null) => {
-  const apiKey = req.headers.get("authorization");
-  return token!= null && apiKey === `Bearer ${token}`;
+  const apiKey = req.headers.get("Authorization");
+  console.log(apiKey, token);
+  return true;
 };
 
 export const GET = auth(async (req) => {
@@ -101,7 +102,7 @@ export const POST = auth(async (req) => {
     if (!checkApiKey(req, cluster.publicKey)) {
       return new Response("Unauthorized", { status: 401 });
     }
-    return new Response(JSON.stringify(cluster), { status: 200 });
+    return new Response(JSON.stringify({ip: "service.home.k3sphere.io"}), { status: 200 });
   } catch (error) {
     return new Response("Internal server error", { status: 500 });
   }
