@@ -102,7 +102,7 @@ export const POST = auth(async (req) => {
     if (!checkApiKey(req, cluster.publicKey)) {
       return new Response("Unauthorized", { status: 401 });
     }
-    return new Response(JSON.stringify({ip: "service.home.k3sphere.io"}), { status: 200 });
+    return new Response(JSON.stringify({ip: "73.25.12.8"}), { status: 200 });
   } catch (error) {
     return new Response("Internal server error", { status: 500 });
   }
