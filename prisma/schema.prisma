@@ -117,6 +117,7 @@ model K8sCluster {
   relays            ClusterRelay[]
   services          Service[]
   regionPorts       RegionPort[]
+  members           Member[]
   @@map(name: "clusters")
 }
 
@@ -199,3 +200,16 @@ model Service {
   regionPorts       RegionPort[]
   @@map(name: "services")
 }
+
+
+model Member {
+  id                String   @id @default(cuid())
+  clusterId         String   @map(name: "cluster_id")
+  userId            String   @map(name: "user_id")
+  role              UserRole
+  createdAt         DateTime @default(now()) @map(name: "created_at")
+  updatedAt         DateTime @default(now()) @map(name: "updated_at")
+  cluster           K8sCluster @relation(fields: [clusterId], references: [id], onDelete: Cascade)
+  @@map(name: "members")
+}
+
