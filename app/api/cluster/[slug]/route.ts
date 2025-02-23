@@ -1,15 +1,51 @@
 import { auth } from "@/auth";
 
 import { prisma } from "@/lib/db";
+import { NextResponse } from "next/server";
 
 export const GET = auth(async (req) => {
-  if (!req.auth) {
-    return new Response("Not authenticated", { status: 401 });
+  let authHeader = req.headers.get('authorization');
+  if (!authHeader) {
+    authHeader = req.headers.get('Authorization');
   }
+  console.log(authHeader);
+  let userId = "";
+  if (authHeader && authHeader.startsWith('Basic ')) {
+    const base64Credentials = authHeader.substring(6);
+    const decoded = Buffer.from(base64Credentials, 'base64').toString('utf-8');
+    const [clusterId, password] = decoded.split(':');
 
-  const currentUser = req.auth.user;
-  if (!currentUser) {
-    return new Response("Invalid user", { status: 401 });
+    if (!clusterId || !password) {
+      return NextResponse.json({ message: 'Invalid credentials' }, { status: 401 });
+    }
+
+    // Query database using Prisma
+    const user = await prisma.k8sCluster.findUnique({
+      where: { id: clusterId  },
+      select: {
+        id: true,
+        apiKey: true,
+        relays: {
+          select: {
+            id: true,
+            relay: true,
+          },
+        },
+      }
+    });
+
+    if (!user || user.apiKey !== password) {
+      return NextResponse.json({ message: 'Authentication failed' }, { status: 401 });
+    }
+    userId = user.id;
+  }else if (!req.auth) {
+    return new Response("Not authenticated", { status: 401 });
+  }else {
+    const currentUser = req.auth.user;
+    if (!currentUser) {
+      return new Response("Invalid user", { status: 401 });
+    }
+    userId = currentUser.id!;
   }
 
   const { pathname } = req.nextUrl;
@@ -20,7 +56,7 @@ export const GET = auth(async (req) => {
   try {
     const cluster = await prisma.k8sCluster.findFirst({
       where: {
-        userId: currentUser.id,
+        userId,
         OR: [
           { id: slug },
           { name: slug }
