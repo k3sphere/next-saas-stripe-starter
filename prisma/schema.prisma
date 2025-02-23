@@ -101,12 +101,12 @@ model K8sCluster {
   userId            String   @map(name: "user_id")
   name              String   @unique
   location          String
-  apiKey            String   @map(name: "api_key")
+  apiKey            String?   @map(name: "api_key")
   network           String?
   publicKey         String?  @map(name: "public_key")
-  ip                String
-  host              String
-  dns               String
+  ip                String?
+  host              String?
+  dns               String?
   oidc              Boolean? @default(false)
   createdAt         DateTime @default(now()) @map(name: "created_at")
   updatedAt         DateTime @default(now()) @map(name: "updated_at")

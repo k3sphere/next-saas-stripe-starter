@@ -47,7 +47,7 @@ export const POST = auth(async (req) => {
   await req.json();
   console.log(name, location)
   try {
-    const clusters = await prisma.k8sCluster.create({ data: { userId, name, location, apiKey: "something"}});
+    const clusters = await prisma.k8sCluster.create({ data: { userId, name, location}});
     return new Response(JSON.stringify(clusters), { status: 200 });
   } catch (error) {
     console.log(error)
