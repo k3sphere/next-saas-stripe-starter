@@ -119,12 +119,24 @@ model K8sCluster {
   @@map(name: "clusters")
 }
 
+model Region {
+  id String @id
+  name String
+  continent String
+  cdnAccount String?
+  cdnKey     String?
+  active   Boolean
+  servers  RelayServer[]
+  @@map(name: "regions")
+}
 model RelayServer {
   id      String   @id
   ip      String
   url    String
   location   String
+  active   Boolean
   clusters ClusterRelay[]
+  region   Region  @relation(fields: [location], references: [id], onDelete: Cascade)
   @@map(name: "relay_servers")
 }
 
