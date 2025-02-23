@@ -33,7 +33,7 @@ const FormSchema = z.object({
       message: "name must be at least 2 characters.",
     })
     .max(32, { message: "name must be at most 32 characters." }),
-  location: z.enum(["Stockholm", "Hong Kong", "Singapore", "Tokyo", "US-West"]),
+  location: z.string(),
 });
 const isValidLocation = (
   location: string,
@@ -47,9 +47,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     defaultValues: {
       name: cluster.name, // default value
-      location: isValidLocation(cluster.location)
-        ? cluster.location
-        : undefined,
+      location: cluster.location,
     },
     resolver: zodResolver(FormSchema),
   });
