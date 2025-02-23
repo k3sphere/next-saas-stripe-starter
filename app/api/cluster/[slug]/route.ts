@@ -23,6 +23,8 @@ export const GET = auth(async (req) => {
       where: { id: clusterId  },
       select: {
         id: true,
+        name: true,
+        location: true,
         apiKey: true,
         userId: true,
         relays: {
