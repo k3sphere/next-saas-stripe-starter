@@ -92,5 +92,4 @@ export async function GET(req) {
     return NextResponse.json({ records: [dns] });
   }
 
-  return NextResponse.json({ records: [] });
 }
