@@ -25,6 +25,7 @@ export const GET = auth(async (req) => {
       select: {
         id: true,
         apiKey: true,
+        userId: true,
         relays: {
           select: {
             id: true,
@@ -37,7 +38,7 @@ export const GET = auth(async (req) => {
     if (!user || user.apiKey !== password) {
       return NextResponse.json({ message: 'Authentication failed' }, { status: 401 });
     }
-    userId = user.id;
+    userId = user.userId;
   }else if (!req.auth) {
     return new Response("Not authenticated", { status: 401 });
   }else {
