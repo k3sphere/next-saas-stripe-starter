@@ -2,15 +2,18 @@ import { prisma } from '@/lib/db';
 import { encrypt } from '@/lib/session';
 import { NextResponse } from 'next/server';
 
-export async function GET(req) {
+import { auth } from "@/auth";
+
+export const GET = auth(async (req) => {
   console.log("Cron job running...");
-  let domain = req.searchParams.get('domain');
+  const url = new URL(req.url);
+  let domain = url.searchParams.get('domain');
   let port = 0;
   if(domain && domain.indexOf(":") !== -1) {
     console.log("domain has port, skipping...");
     const parts = domain.split(":");
     domain = parts[0];
-    port = parts[1];
+    port = parseInt(parts[1], 10);
   }
   if(!domain) {
     console.log("no domain provided, skipping...");
@@ -92,4 +95,4 @@ export async function GET(req) {
     return NextResponse.json({ records: [dns] });
   }
 
-}
+});
