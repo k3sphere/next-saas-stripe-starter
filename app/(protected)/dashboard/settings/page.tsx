@@ -23,6 +23,7 @@ export default async function SettingsPage() {
         heading="Settings"
         text="Manage account and website settings."
       />
+      <RegisterKeyForm />
       <div className="divide-y divide-muted pb-10">
         <UserNameForm user={{ id: user.id, name: user.name || "" }} />
         <UserRoleForm user={{ id: user.id, role: user.role }} />

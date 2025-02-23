@@ -1,5 +1,6 @@
 import type { NextAuthConfig } from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
+import Passkey from "next-auth/providers/passkey"
 
 import { env } from "@/env.mjs";
 
@@ -10,6 +11,7 @@ export default {
       clientSecret: process.env.KEYCLOAK_SECRET,
       issuer: process.env.KEYCLOAK_ISSUER,
     }),
+    Passkey,
   ],
   cookies: {
     sessionToken: {
@@ -23,4 +25,5 @@ export default {
       },
     },
   },
+  experimental: { enableWebAuthn: true },
 } satisfies NextAuthConfig;
