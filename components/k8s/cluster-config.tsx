@@ -145,7 +145,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                                 </SelectGroup>
                                 <SelectGroup>
                                   <SelectLabel>Europe</SelectLabel>
-                                  <SelectItem value="Stockholm">Stockholm</SelectItem>
+                                  <SelectItem value="eu-north-1">Stockholm</SelectItem>
                                 </SelectGroup>
                               </SelectContent>
                             </Select>
