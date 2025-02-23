@@ -85,7 +85,7 @@ export const GET = auth(async (req) => {
     }
     console.log("number of records: " + records.length)
     const host = cluster.host
-    const ip = records[0].relay.ip;
+    const ip = cluster.ip;
     let ports = "80:443";
     if(service == "api") {
       ports = "6443";
