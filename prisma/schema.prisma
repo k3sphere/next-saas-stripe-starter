@@ -116,6 +116,8 @@ model K8sCluster {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   machines  Machine[]
   relays ClusterRelay[]
+  services Service[]
+  regionPorts RegionPort[]
   @@map(name: "clusters")
 }
 
@@ -127,8 +129,26 @@ model Region {
   cdnKey     String?
   active   Boolean
   servers  RelayServer[]
+  regionPorts RegionPort[]
   @@map(name: "regions")
 }
+
+
+model RegionPort {
+  id String @id
+  location String
+  port Int
+  clusterId String?
+  serviceId String?
+  servicePort Int?
+  active   Boolean? @default(false)
+  cluster K8sCluster? @relation(fields: [clusterId], references: [id], onDelete: Cascade)
+  region   Region  @relation(fields: [location], references: [id], onDelete: Cascade)
+  service  Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  @@map(name: "region_ports")
+}
+
+
 model RelayServer {
   id      String   @id
   ip      String
@@ -168,5 +188,20 @@ model Machine {
   machines  Machine[] @relation(name: "MachineGateway")
   cluster K8sCluster @relation(fields: [clusterId], references: [id], onDelete: Cascade)
   @@map(name: "machines")
+
+}
+
+model Service {
+  id                String   @id @default(cuid())
+  clusterId         String
+  name       String
+  namespace  String
+  ip         String
+  ports      String[]
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @default(now())
+  cluster K8sCluster @relation(fields: [clusterId], references: [id], onDelete: Cascade)
+  regionPorts RegionPort[]
+  @@map(name: "services")
 
 }
