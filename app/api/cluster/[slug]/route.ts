@@ -9,7 +9,6 @@ export const GET = auth(async (req) => {
     authHeader = req.headers.get('Authorization');
   }
   console.log(authHeader);
-  let userId = "";
   if (authHeader && authHeader.startsWith('Basic ')) {
     const base64Credentials = authHeader.substring(6);
     const decoded = Buffer.from(base64Credentials, 'base64').toString('utf-8');
@@ -20,7 +19,7 @@ export const GET = auth(async (req) => {
     }
 
     // Query database using Prisma
-    const user = await prisma.k8sCluster.findUnique({
+    const cluster = await prisma.k8sCluster.findUnique({
       where: { id: clusterId  },
       select: {
         id: true,
@@ -35,60 +34,59 @@ export const GET = auth(async (req) => {
       }
     });
 
-    if (!user || user.apiKey !== password) {
+    if (!cluster || cluster.apiKey !== password) {
       return NextResponse.json({ message: 'Authentication failed' }, { status: 401 });
     }
-    userId = user.userId;
-  }else if (!req.auth) {
-    return new Response("Not authenticated", { status: 401 });
+    return new Response(JSON.stringify(cluster), { status: 200 });
   }else {
+    if (!req.auth) {
+      return new Response("Not authenticated", { status: 401 });
+    }
     const currentUser = req.auth.user;
     if (!currentUser) {
       return new Response("Invalid user", { status: 401 });
     }
-    userId = currentUser.id!;
-  }
+    
+    const { pathname } = req.nextUrl;
 
-  const { pathname } = req.nextUrl;
-
-  const slug = pathname.split("/").pop(); // Get the last segment
+    const slug = pathname.split("/").pop(); // Get the last segment
 
 
-  try {
-    const cluster = await prisma.k8sCluster.findFirst({
-      where: {
-        userId,
-        OR: [
-          { id: slug },
-          { name: slug }
-        ]
-      },
-      select: {
-        id: true,
-        name: true,
-        location: true,
-        apiKey: true,
-        publicKey: true,
-        host: true,
-        ip: true,
-        dns: true,
-        relays: {
-          select: {
-            id: true,
-            relay: {
-              select: {
-                ip: true
-              }
+    try {
+      const cluster = await prisma.k8sCluster.findFirst({
+        where: {
+          userId: currentUser.id,
+          OR: [
+            { id: slug },
+            { name: slug }
+          ]
+        },
+        select: {
+          id: true,
+          name: true,
+          location: true,
+          apiKey: true,
+          publicKey: true,
+          host: true,
+          ip: true,
+          dns: true,
+          relays: {
+            select: {
+              id: true,
+              relay: {
+                select: {
+                  ip: true
+                }
+              },
             },
           },
-        },
-      }
-    });
-    return new Response(JSON.stringify(cluster), { status: 200 });
-  } catch (error) {
-    return new Response("Internal server error", { status: 500 });
+        }
+      });
+      return new Response(JSON.stringify(cluster), { status: 200 });
+    } catch (error) {
+      return new Response("Internal server error", { status: 500 });
+    }
   }
-
 });
 
 
