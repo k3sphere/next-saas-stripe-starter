@@ -17,10 +17,10 @@ enum UserRole {
 
 model Account {
   id                String   @id @default(cuid())
-  userId            String
+  userId            String   @map(name: "user_id")
   type              String
   provider          String
-  providerAccountId String
+  providerAccountId String   @map(name: "provider_account_id")
   refresh_token     String?  @db.Text
   access_token      String?  @db.Text
   expires_at        Int?
@@ -40,8 +40,8 @@ model Account {
 
 model Session {
   id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
+  sessionToken String   @unique @map(name: "session_token")
+  userId       String   @map(name: "user_id")
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -53,7 +53,7 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
-  emailVerified DateTime?
+  emailVerified DateTime? @map(name: "email_verified")
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
@@ -83,41 +83,40 @@ model VerificationToken {
 
 model Authenticator {
   id                   String  @id @default(cuid())
-  credentialID         String  @unique
-  userId               String
-  providerAccountId    String
-  credentialPublicKey  String
+  credentialID         String  @unique @map(name: "credential_id")
+  userId               String  @map(name: "user_id")
+  providerAccountId    String  @map(name: "provider_account_id")
+  credentialPublicKey  String  @map(name: "credential_public_key")
   counter              Int
-  credentialDeviceType String
-  credentialBackedUp   Boolean
+  credentialDeviceType String  @map(name: "credential_device_type")
+  credentialBackedUp   Boolean @map(name: "credential_backed_up")
   transports           String?
  
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@map(name: "authenticators")
 }
 
-
 model K8sCluster {
   id                String   @id @default(cuid())
-  userId            String
-  name       String @unique
-  location   String
-  apiKey     String
-  network    String?
-  publicKey  String?
-  ip         String?
-  host       String?
-  dns        String?
-  oidc       Boolean?          @default(false)
-  createdAt  DateTime          @default(now())
-  updatedAt  DateTime          @default(now())
-  delete     Boolean?          @default(false)
-  synched     Boolean?         @default(false)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  machines  Machine[]
-  relays ClusterRelay[]
-  services Service[]
-  regionPorts RegionPort[]
+  userId            String   @map(name: "user_id")
+  name              String   @unique
+  location          String
+  apiKey            String   @map(name: "api_key")
+  network           String?
+  publicKey         String?  @map(name: "public_key")
+  ip                String
+  host              String
+  dns               String
+  oidc              Boolean? @default(false)
+  createdAt         DateTime @default(now()) @map(name: "created_at")
+  updatedAt         DateTime @default(now()) @map(name: "updated_at")
+  delete            Boolean? @default(false)
+  synched           Boolean? @default(false)
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  machines          Machine[]
+  relays            ClusterRelay[]
+  services          Service[]
+  regionPorts       RegionPort[]
   @@map(name: "clusters")
 }
 
@@ -133,75 +132,70 @@ model Region {
   @@map(name: "regions")
 }
 
-
 model RegionPort {
-  id String @id
-  location String
-  port Int
-  clusterId String?
-  serviceId String?
-  servicePort Int?
-  active   Boolean? @default(false)
-  cluster K8sCluster? @relation(fields: [clusterId], references: [id], onDelete: Cascade)
-  region   Region  @relation(fields: [location], references: [id], onDelete: Cascade)
-  service  Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  id           String   @id
+  location     String
+  port         Int
+  clusterId    String?  @map(name: "cluster_id")
+  serviceId    String?  @map(name: "service_id")
+  servicePort  Int?     @map(name: "service_port")
+  active       Boolean? @default(false)
+  cluster      K8sCluster? @relation(fields: [clusterId], references: [id], onDelete: Cascade)
+  region       Region  @relation(fields: [location], references: [id], onDelete: Cascade)
+  service      Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   @@map(name: "region_ports")
 }
 
-
 model RelayServer {
-  id      String   @id
-  ip      String
-  url    String
-  location   String
-  active   Boolean
-  clusters ClusterRelay[]
-  region   Region  @relation(fields: [location], references: [id], onDelete: Cascade)
+  id        String   @id
+  ip        String
+  url       String
+  location  String
+  active    Boolean
+  clusters  ClusterRelay[]
+  region    Region  @relation(fields: [location], references: [id], onDelete: Cascade)
   @@map(name: "relay_servers")
 }
 
 model ClusterRelay {
   id           String   @id @default(cuid())
-  clusterId       String
-  relayId         String
-  cluster         K8sCluster     @relation(fields: [clusterId], references: [id], onDelete: Cascade)
-  relay         RelayServer     @relation(fields: [relayId], references: [id], onDelete: Cascade)
+  clusterId    String   @map(name: "cluster_id")
+  relayId      String   @map(name: "relay_id")
+  cluster      K8sCluster @relation(fields: [clusterId], references: [id], onDelete: Cascade)
+  relay        RelayServer @relation(fields: [relayId], references: [id], onDelete: Cascade)
   @@map(name: "cluster_relay")
 }
 
-
 model Machine {
   id                String   @id
-  clusterId         String
-  name       String
-  vlan       String
-  port       Int
-  username       String
-  ip         String
-  publicIp   String?
-  gatewayId    String?
-  createdAt  DateTime          @default(now())
-  updatedAt  DateTime          @default(now())
-  delete     Boolean?          @default(false)
+  clusterId         String   @map(name: "cluster_id")
+  name              String
+  vlan              String
+  port              Int
+  username          String
+  ip                String
+  publicIp          String?  @map(name: "public_ip")
+  gatewayId         String?  @map(name: "gateway_id")
+  createdAt         DateTime @default(now()) @map(name: "created_at")
+  updatedAt         DateTime @default(now()) @map(name: "updated_at")
+  delete            Boolean? @default(false)
   // Define self-referencing relation
-  gateway   Machine? @relation(name: "MachineGateway", fields: [gatewayId], references: [id], onDelete: Cascade)
-  machines  Machine[] @relation(name: "MachineGateway")
-  cluster K8sCluster @relation(fields: [clusterId], references: [id], onDelete: Cascade)
+  gateway           Machine? @relation(name: "MachineGateway", fields: [gatewayId], references: [id], onDelete: Cascade)
+  machines          Machine[] @relation(name: "MachineGateway")
+  cluster           K8sCluster @relation(fields: [clusterId], references: [id], onDelete: Cascade)
   @@map(name: "machines")
-
 }
 
 model Service {
   id                String   @id @default(cuid())
-  clusterId         String
-  name       String
-  namespace  String
-  ip         String
-  ports      String[]
-  createdAt  DateTime          @default(now())
-  updatedAt  DateTime          @default(now())
-  cluster K8sCluster @relation(fields: [clusterId], references: [id], onDelete: Cascade)
-  regionPorts RegionPort[]
+  clusterId         String   @map(name: "cluster_id")
+  name              String
+  namespace         String
+  ip                String
+  ports             String[]
+  createdAt         DateTime @default(now()) @map(name: "created_at")
+  updatedAt         DateTime @default(now()) @map(name: "updated_at")
+  cluster           K8sCluster @relation(fields: [clusterId], references: [id], onDelete: Cascade)
+  regionPorts       RegionPort[]
   @@map(name: "services")
-
 }
