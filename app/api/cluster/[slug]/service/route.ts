@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 
 import { prisma } from "@/lib/db";
+import { Service } from "@/types/k8s";
 
 const checkApiKey = (req: Request, token: string|null) => {
   const apiKey = req.headers.get("Authorization");
@@ -60,7 +61,7 @@ export const GET = auth(async (req) => {
 
 export const POST = auth(async (req) => {
 
-  const body = await req.json();
+  const body: Service = await req.json();
   console.log(body);
   const { pathname } = req.nextUrl;
 
@@ -103,7 +104,12 @@ export const POST = auth(async (req) => {
     if (!checkApiKey(req, cluster.publicKey)) {
       return new Response("Unauthorized", { status: 401 });
     }
+    // create services   clusterId         String   @map(name: "cluster_id")
     const ip = cluster.relays.map((relay)=>relay.relay.ip);
+    const service = await prisma.service.create({data: {clusterId: cluster.id, name: body.name, namespace: body.namespace, ip}})
+    body.ports.forEach(async (item)=> {
+      await prisma.servicePort.create({data: {serviceId: service.id, name: item.name, port: item.port, region: cluster.location, protocol: item.protocol, nodePort: item.nodePort, relayPort: item.nodePort}})
+    })
     return new Response(JSON.stringify({ip}), { status: 200 });
   } catch (error) {
     return new Response("Internal server error", { status: 500 });

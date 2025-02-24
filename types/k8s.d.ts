@@ -46,4 +46,17 @@ export interface Cluster {
   relays: ClusterRelay[];
 }
 
+export interface Service {
+  name:       string
+  namespace:  string
+  ports: ServicePort[]
+}
+
+export interface ServicePort {
+  name: string?,
+  protocol: string,
+  port: int,
+  nodePort: int
+}
+
 export type ClustersArray = Cluster[] | undefined;
