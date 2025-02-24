@@ -63,6 +63,7 @@ model User {
   clusters K8sCluster[]
   sessions Session[]
   authenticators Authenticator[]
+  keys           Key[]
 
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
@@ -213,3 +214,18 @@ model Member {
   @@map(name: "members")
 }
 
+model Key {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(100)
+  sshKey    String   @map("public_key") @db.VarChar(2048)
+  x         String   @db.VarChar(100)
+  y         String   @db.VarChar(100)
+  keyType   String   @map("key_type") @db.VarChar(20)
+  keyId     String   @map("key_id") @db.VarChar(100)
+  userId    String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  user User @relation(fields: [userId], references: [id])
+}

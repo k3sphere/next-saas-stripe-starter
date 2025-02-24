@@ -42,15 +42,15 @@ export const GET = auth(async (req) => {
     }
 
 
-    const keys = await prisma.authenticator.findMany({
+    const result = await prisma.key.findMany({
       where: {
         userId:  user.userId
       },
       select: {
-        credentialPublicKey: true
+        sshKey: true
       }
     })
-
+    const keys = result.map((item)=>item.sshKey);
     return NextResponse.json({keys});
   }
 
