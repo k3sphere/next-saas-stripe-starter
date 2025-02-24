@@ -42,7 +42,7 @@ export const GET = auth(async (req) => {
     }
 
 
-    const result = await prisma.authenticator.findMany({
+    const keys = await prisma.authenticator.findMany({
       where: {
         userId:  user.userId
       },
@@ -51,7 +51,7 @@ export const GET = auth(async (req) => {
       }
     })
 
-    return NextResponse.json(result);
+    return NextResponse.json({keys});
   }
 
 
