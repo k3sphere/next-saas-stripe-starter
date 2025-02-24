@@ -44,7 +44,14 @@ export const POST = auth(async (req) => {
 
   const currentUser = req.auth.user;
   if (!currentUser || !currentUser.id) {
-    return new Response("Invalid user", { status: 401 });
+    const response = new Response("Invalid user", { status: 401 });
+    response.headers.set(
+      "Access-Control-Allow-Origin",
+      "https://ssh.k3sphere.com"
+    );
+    response.headers.set("Access-Control-Allow-Credentials", "true");
+
+    return response;
   }
   const userId = currentUser.id
   const { sshKey, hostName,name,type,x,y,ID} =
@@ -70,7 +77,14 @@ export const POST = auth(async (req) => {
     return response;
   } catch (error) {
     console.log(error)
-    return new Response("Internal server error", { status: 500 });
+    const response = new Response("Internal server error", { status: 500 });
+    response.headers.set(
+      "Access-Control-Allow-Origin",
+      "https://ssh.k3sphere.com"
+    );
+    response.headers.set("Access-Control-Allow-Credentials", "true");
+
+    return response;
   }
 
 });
