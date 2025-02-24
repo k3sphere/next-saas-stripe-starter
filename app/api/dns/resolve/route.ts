@@ -33,10 +33,10 @@ export const GET = auth(async (req) => {
     }
     const servicePort = await prisma.servicePort.findFirst({
       where: {
-        relayPort: 8383,
+        relayPort: port,
         service: {
           ip: {
-            has: "73.21.5.32", // Use `has` for array filtering
+            has: domain, // Use `has` for array filtering
           },
         },
       },
