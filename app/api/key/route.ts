@@ -22,7 +22,14 @@ export const GET = auth(async (req) => {
         userId: currentUser.id,
       },
     });
-    return new Response(JSON.stringify(clusters), { status: 200 });
+    const response = new Response(JSON.stringify(clusters), { status: 200 });
+    response.headers.set(
+      "Access-Control-Allow-Origin",
+      "https://ssh.k3sphere.com"
+    );
+    response.headers.set("Access-Control-Allow-Credentials", "true");
+
+    return response;
   } catch (error) {
     return new Response("Internal server error", { status: 500 });
   }
@@ -48,7 +55,12 @@ export const POST = auth(async (req) => {
   
   try {
     await prisma.key.create({data: { name, sshKey, x, y, keyId: ID, keyType: type,  userId}});
-    const response = NextResponse.json({code: "OK"})
+    const clusters = await prisma.key.findMany({
+      where: {
+        userId: currentUser.id,
+      },
+    });
+    const response = new Response(JSON.stringify(clusters), { status: 200 });
     response.headers.set(
       "Access-Control-Allow-Origin",
       "https://ssh.k3sphere.com"
