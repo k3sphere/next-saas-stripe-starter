@@ -228,4 +228,6 @@ model Key {
   deletedAt DateTime? @map("deleted_at")
 
   user User @relation(fields: [userId], references: [id])
+
+  @@map(name: "keys")
 }
