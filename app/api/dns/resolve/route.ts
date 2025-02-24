@@ -31,28 +31,38 @@ export const GET = auth(async (req) => {
       console.log("no record found, skipping...");
       return NextResponse.json({ records: [] });
     }
-    const rp = await prisma.regionPort.findFirst({
+    const servicePort = await prisma.servicePort.findFirst({
       where: {
-        location: server.location,
-        port: port,
-        active: true
+        relayPort: 8383,
+        service: {
+          ip: {
+            has: "73.21.5.32", // Use `has` for array filtering
+          },
+        },
       },
       select: {
-        id: true,
-        port: true,
-        servicePort: true,
-        region: true,
-        cluster: true
-      }
+        nodePort: true,
+        service: {
+          select: {
+            cluster: {
+              select: {
+                host: true,
+                ip: true,
+              }
+            }
+          }
+        }
+      },
+
     });
-    if(!rp || !rp.cluster) {
+    if(!servicePort) {
       console.log("no record found, skipping...");
       return NextResponse.json({ records: [] });
     }
-    const host = rp.cluster!.host
-    const ip = rp.cluster!.ip;
+    const host = servicePort.service.cluster.host
+    const ip = servicePort.service.cluster.ip;
 
-    const dns = await encrypt(`${host}:${ip}:${rp.servicePort}`, process.env.ENCRYPTION_KEY!);
+    const dns = await encrypt(`${host}:${ip}:${servicePort.nodePort}`, process.env.ENCRYPTION_KEY!);
     console.log("dns: " + dns);
     return NextResponse.json({ records: [dns] });
   }else {
