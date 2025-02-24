@@ -60,7 +60,8 @@ export const GET = auth(async (req) => {
 
 export const POST = auth(async (req) => {
 
-  console.log(req);
+  const body = await req.json();
+  console.log(body);
   const { pathname } = req.nextUrl;
 
   const segments = pathname.split("/")
@@ -102,7 +103,8 @@ export const POST = auth(async (req) => {
     if (!checkApiKey(req, cluster.publicKey)) {
       return new Response("Unauthorized", { status: 401 });
     }
-    return new Response(JSON.stringify({ip: "73.25.12.8"}), { status: 200 });
+    const ip = cluster.relays.map((relay)=>relay.relay.ip);
+    return new Response(JSON.stringify({ip}), { status: 200 });
   } catch (error) {
     return new Response("Internal server error", { status: 500 });
   }
