@@ -5,7 +5,7 @@ import { auth } from "@/auth";
 
 import { prisma } from "@/lib/db";
 
-export const POST = auth(async (req) => {
+export const GET = auth(async (req) => {
 
   let authHeader = req.headers.get('authorization');
   if (!authHeader) {
@@ -41,10 +41,6 @@ export const POST = auth(async (req) => {
       return NextResponse.json({ message: 'Authentication failed' }, { status: 401 });
     }
 
-
-
-    const { machine, account } =
-    await req.json();
 
     const result = await prisma.authenticator.findMany({
       where: {
