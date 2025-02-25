@@ -68,6 +68,7 @@ export const GET = auth(async (req) => {
           id: true,
           name: true,
           location: true,
+          clientId: true,
           apiKey: true,
           publicKey: true,
           host: true,
