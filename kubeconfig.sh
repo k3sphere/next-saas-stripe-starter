@@ -23,7 +23,7 @@ kubectl config set "clusters.${NAME}.certificate-authority-data" "$CERT_AUTH_DAT
 # Set Kubernetes user with OIDC authentication
 kubectl config set-credentials "$NAME" \
   --exec-api-version=client.authentication.k8s.io/v1beta1 \
-  --exec-command=kubelogin \
+  --exec-command=kubectl-oidc_login \
   --exec-arg=get-token \
   --exec-arg=--oidc-issuer-url=https://auth.k3sphere.com/realms/k3sphere \
   --exec-arg=--oidc-client-id="$OIDC_CLIENT_ID" \
