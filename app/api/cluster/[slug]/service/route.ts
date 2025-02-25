@@ -11,46 +11,47 @@ const checkApiKey = (req: Request, token: string|null) => {
 
 export const GET = auth(async (req) => {
 
+
+  if (!req.auth) {
+    return new Response("Not authenticated", { status: 401 });
+  }
+
+  const currentUser = req.auth.user;
+  if (!currentUser) {
+    return new Response("Invalid user", { status: 401 });
+  }
+
   const { pathname } = req.nextUrl;
   const segments = pathname.split("/")
   const slug = segments[segments.length-2]; // Get the last segment
 
+
   try {
     const cluster = await prisma.k8sCluster.findFirst({
       where: {
-        OR: [
-          { id: slug },
-          { name: slug }
-        ]
+        userId: currentUser.id,
+        delete: false
       },
       select: {
         id: true,
         name: true,
         location: true,
-        apiKey: true,
         publicKey: true,
-        host: true,
-        ip: true,
-        dns: true,
-        relays: {
+        services: {
           select: {
             id: true,
-            relay: {
-              select: {
-                ip: true
-              }
-            },
-          },
-        },
-      }
+            name: true,
+            namespace: true,
+            ports: true,
+          }
+        }
+      },
     });
-    if (!cluster) {
-      return new Response("Cluster not found", { status: 404 });
+    if(!cluster) {
+      return new Response("cluster not found", { status: 404 });
     }
-    if (!checkApiKey(req, cluster.publicKey)) {
-      return new Response("Unauthorized", { status: 401 });
-    }
-    return new Response(JSON.stringify(cluster), { status: 200 });
+    const services = cluster.services;
+    return new Response(JSON.stringify(services), { status: 200 });
   } catch (error) {
     return new Response("Internal server error", { status: 500 });
   }
