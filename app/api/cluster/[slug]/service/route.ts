@@ -107,7 +107,8 @@ export const POST = auth(async (req) => {
     const ip = cluster.relays.map((relay)=>relay.relay.ip);
     const service = await prisma.service.create({data: {clusterId: cluster.id, name: body.name, namespace: body.namespace, ip}})
     body.ports.forEach(async (item)=> {
-      await prisma.servicePort.create({data: {serviceId: service.id, name: item.name, port: item.port, region: cluster.location, protocol: item.protocol, nodePort: item.nodePort, relayPort: item.nodePort}})
+      const port = await getNextAvailablePort(cluster.location);
+      await prisma.servicePort.create({data: {serviceId: service.id, name: item.name, port: item.port, region: cluster.location, protocol: item.protocol, nodePort: item.nodePort, relayPort: port}})
     })
     return new Response(JSON.stringify({ip}), { status: 200 });
   } catch (error) {
@@ -117,4 +118,14 @@ export const POST = auth(async (req) => {
 
 });
 
+
+async function getNextAvailablePort(location: string) {
+  const maxPort = await prisma.servicePort.findFirst({
+    where: { region: location },
+    orderBy: { relayPort: 'desc' },
+    select: { relayPort: true }
+  });
+
+  return maxPort ? maxPort.relayPort + 1 : 10000; 
+}
 
