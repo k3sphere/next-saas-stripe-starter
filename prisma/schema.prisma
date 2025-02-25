@@ -102,6 +102,7 @@ model K8sCluster {
   userId            String   @map(name: "user_id")
   name              String   @unique
   location          String
+  clientId          String?   @map(name: "client_id")
   apiKey            String?   @map(name: "api_key")
   network           String?
   publicKey         String?  @map(name: "public_key")
@@ -206,8 +207,11 @@ model ServicePort {
 model Member {
   id                String   @id @default(cuid())
   clusterId         String   @map(name: "cluster_id")
-  userId            String   @map(name: "user_id")
+  userId            String?   @map(name: "user_id")
   role              UserRole
+  email             String?
+  delete           Boolean? @default(false)
+  synched           Boolean? @default(false)
   createdAt         DateTime @default(now()) @map(name: "created_at")
   updatedAt         DateTime @default(now()) @map(name: "updated_at")
   cluster           K8sCluster @relation(fields: [clusterId], references: [id], onDelete: Cascade)
