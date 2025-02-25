@@ -53,7 +53,7 @@ export const DELETE = auth(async (req) => {
     const parts = slug1.split(":");
     const namespace = parts[0];
     const service = parts[1];
-    prisma.service.deleteMany({ where: {
+    await prisma.service.deleteMany({ where: {
       clusterId: cluster.id,
       namespace: namespace,
       name: service,
