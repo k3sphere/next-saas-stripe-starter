@@ -139,7 +139,8 @@ export const DELETE = auth(async (req) => {
         id: slug
       },
       data: {
-        delete: true
+        delete: true,
+        synched: false,
       },
       select: {
         id: true,
