@@ -98,7 +98,7 @@ model Authenticator {
 }
 
 model K8sCluster {
-  id                String   @id @default(cuid())
+  id                String   @id @default(uuid())
   userId            String   @map(name: "user_id")
   name              String   @unique
   location          String
