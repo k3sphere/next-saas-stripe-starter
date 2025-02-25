@@ -32,6 +32,7 @@ export interface Cluster {
   name: string;
   status: keyof ClusterStatus | null;
   location: string;
+  clientId: string | null;
   userId: string;
   plan: string | null;
   apiKey: string | null;

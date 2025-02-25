@@ -19,12 +19,13 @@ export const GET = auth(async (req) => {
     }
 
     // Query database using Prisma
-    const cluster = await prisma.k8sCluster.findUnique({
-      where: { id: clusterId  },
+    const cluster = await prisma.k8sCluster.findFirst({
+      where: { clientId: clusterId  },
       select: {
         id: true,
         name: true,
         location: true,
+        clientId: true,
         apiKey: true,
         userId: true,
         relays: {

@@ -69,8 +69,8 @@ export function ClusterInfo() {
         <TableCell className="text-left">{cluster?.location}</TableCell>
         </TableRow>
         <TableRow>
-        <TableCell className="text-left">ID</TableCell>
-        <TableCell className="text-left">{cluster?.id}</TableCell>
+        <TableCell className="text-left">Client ID</TableCell>
+        <TableCell className="text-left">{cluster?.clientId}</TableCell>
         </TableRow>
         <TableRow>
         <TableCell className="text-left">API Key</TableCell>
