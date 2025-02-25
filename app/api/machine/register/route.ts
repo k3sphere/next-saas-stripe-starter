@@ -22,10 +22,9 @@ export const POST = auth(async (req) => {
     }
 
     // Query database using Prisma
-    const cluster = await prisma.k8sCluster.findFirst({
-      where: { clientId: clusterId  },
+    const user = await prisma.k8sCluster.findUnique({
+      where: { id: clusterId  },
       select: {
-        id: true,
         apiKey: true,
         relays: {
           select: {
@@ -36,7 +35,7 @@ export const POST = auth(async (req) => {
       }
     });
 
-    if (!cluster || cluster.apiKey !== password) {
+    if (!user || user.apiKey !== password) {
       return NextResponse.json({ message: 'Authentication failed' }, { status: 401 });
     }
 
@@ -49,7 +48,7 @@ export const POST = auth(async (req) => {
   //const cert = issueCertificate(team, name)
   let gatewayId: string = "";
   if (gateway) {
-    const gatewayEntity = await getMachine(cluster.id, gateway);
+    const gatewayEntity = await getMachine(clusterId, gateway);
     if (gatewayEntity) {
       gatewayId = gatewayEntity.id;
         await registerMachine(
@@ -60,7 +59,7 @@ export const POST = auth(async (req) => {
           gatewayId,
           port,
           publicIp,
-          cluster.id,
+          clusterId,
           username,
         );
 
@@ -79,7 +78,7 @@ export const POST = auth(async (req) => {
       });
     }
   } else {
-    const foundServers = cluster.relays;
+    const foundServers = user.relays;
     const url = foundServers.map((srv) => srv.relay.url).join(",");
     const rawToken = id + ":" + ip;
       await registerMachine(
@@ -90,7 +89,7 @@ export const POST = auth(async (req) => {
         null,
         port,
         publicIp,
-        cluster.id,
+        clusterId,
         username,
       );
 

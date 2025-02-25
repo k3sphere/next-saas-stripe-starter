@@ -23,10 +23,9 @@ export const POST = auth(async (req) => {
     }
 
     // Query database using Prisma
-    const user = await prisma.k8sCluster.findFirst({
-      where: { clientId: clusterId  },
+    const user = await prisma.k8sCluster.findUnique({
+      where: { id: clusterId  },
       select: {
-        id: true,
         apiKey: true,
         relays: {
           select: {
@@ -47,7 +46,7 @@ export const POST = auth(async (req) => {
     const dns = await encrypt(`${host}:${ip}:80:443`, process.env.ENCRYPTION_KEY!);
     console.log(ip, host, oidc, publicKey);
     await prisma.k8sCluster.update({
-      where: { id: user.id },
+      where: { id: clusterId },
       data: {
         ip,
         host,

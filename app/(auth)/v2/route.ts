@@ -18,8 +18,8 @@ export async function GET(req: NextRequest) {
       }
 
       // Query database using Prisma
-      const user = await prisma.k8sCluster.findFirst({
-        where: { clientId: username  },
+      const user = await prisma.k8sCluster.findUnique({
+        where: { id: username  },
       });
 
       if (!user || user.apiKey !== password) {

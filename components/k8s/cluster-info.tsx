@@ -70,10 +70,10 @@ export function ClusterInfo() {
         </TableRow>
         <TableRow>
         <TableCell className="text-left">Client ID</TableCell>
-        <TableCell className="text-left">{cluster?.clientId}</TableCell>
+        <TableCell className="text-left">{cluster?.id}</TableCell>
         </TableRow>
         <TableRow>
-        <TableCell className="text-left">API Key</TableCell>
+        <TableCell className="text-left">Client Secret</TableCell>
         <TableCell className="text-left">{cluster?.apiKey}</TableCell>
         </TableRow>
         <TableRow>
