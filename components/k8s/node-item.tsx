@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import type { Cluster, ClusterNode } from "@/types/k8s";
 import { TableBody, TableCell, TableRow } from "../ui/table";
+import { Button } from "../ui/button";
 
 // import { ClusterOperations } from "~/components/k8s/cluster-operation";
 // import { formatDate } from "~/lib/utils";
@@ -30,7 +31,22 @@ export function NodeItem({ node }: NodeItemProps) {
         <TableCell className="text-left">
         </TableCell>
         <TableCell className="text-left">{node.name}</TableCell>
-        <TableCell className="text-left">RUNNING</TableCell>
+        <TableCell className="text-left"><Button onClick={()=>{
+              fetch(`/api/cluster/home/service`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({name: "rdp", namespace: node.id, ports: [{
+                  name: "rdp",
+                  protocol: "tcp",
+                  port: 3389,
+                  nodePort: 3389
+                }]}),
+              }).then(async (res) => {
+                console.log(await res.text())
+              });
+        }}>RDP</Button></TableCell>
 
       </TableRow>
     </TableBody>

@@ -44,6 +44,7 @@ export const GET = auth(async (req) => {
         nodePort: true,
         service: {
           select: {
+            namespace: true,
             cluster: {
               select: {
                 host: true,
@@ -59,8 +60,8 @@ export const GET = auth(async (req) => {
       console.log("no record found, skipping...");
       return NextResponse.json({ records: [] });
     }
-    const host = servicePort.service.cluster.host
-    const ip = servicePort.service.cluster.ip;
+    const host = servicePort.service.namespace.length>20?servicePort.service.namespace:servicePort.service.cluster.host
+    const ip = servicePort.service.namespace.length>20?"127.0.0.1":servicePort.service.cluster.ip;
 
     const dns = await encrypt(`${host}:${ip}:${servicePort.nodePort}`, process.env.ENCRYPTION_KEY!);
     console.log("dns: " + dns);
