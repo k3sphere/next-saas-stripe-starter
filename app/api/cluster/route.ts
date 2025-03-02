@@ -27,18 +27,16 @@ export const GET = auth(async (req) => {
   }
 
   try {
-    const clusters = await prisma.k8sCluster.findMany({
+    const members = await prisma.member.findMany({
       where: {
         userId: currentUser.id,
         delete: false
       },
       select: {
-        id: true,
-        name: true,
-        location: true,
-        publicKey: true,
+        cluster: true,
       },
     });
+    const clusters = members.map((mem)=>mem.cluster);
     return new Response(JSON.stringify(clusters), { status: 200 });
   } catch (error) {
     return new Response("Internal server error", { status: 500 });
