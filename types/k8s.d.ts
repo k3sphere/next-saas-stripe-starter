@@ -59,6 +59,7 @@ export interface ServicePort {
   protocol: string,
   port: int,
   nodePort: int
+  relayPort: int
 }
 
 export type ClustersArray = Cluster[] | undefined;

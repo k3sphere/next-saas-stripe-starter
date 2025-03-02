@@ -25,7 +25,7 @@ export function ServiceItem({ node }: NodeItemProps) {
         <TableCell className="text-left">{node.namespace}</TableCell>
         <TableCell className="text-left">
           {node.ports.map((item)=>{
-            return <p>{item.name} {item.protocol} {item.nodePort}:{item.port}</p>
+            return <p>{item.protocol} {item.port}:{item.relayPort}</p>
           })}
         </TableCell>
         <TableCell className="text-left"></TableCell>
