@@ -27,30 +27,31 @@ export const GET = auth(async (req) => {
 
 
   try {
-    const cluster = await prisma.k8sCluster.findFirst({
+    const member = await prisma.member.findFirst({
       where: {
         userId: currentUser.id,
+        clusterId: slug,
         delete: false
       },
       select: {
-        id: true,
-        name: true,
-        location: true,
-        publicKey: true,
-        services: {
+        cluster: {
           select: {
-            id: true,
-            name: true,
-            namespace: true,
-            ports: true,
+            services: {
+              select: {
+                id: true,
+                name: true,
+                namespace: true,
+                ports: true,
+              }
+            }
           }
         }
       },
     });
-    if(!cluster) {
+    if(!member) {
       return new Response("cluster not found", { status: 404 });
     }
-    const services = cluster.services;
+    const services = member.cluster.services;
     return new Response(JSON.stringify(services), { status: 200 });
   } catch (error) {
     return new Response("Internal server error", { status: 500 });
