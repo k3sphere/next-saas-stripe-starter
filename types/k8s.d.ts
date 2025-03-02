@@ -36,6 +36,7 @@ export interface Cluster {
   clientId: string | null;
   userId: string;
   plan: string | null;
+  role: string | null;
   apiKey: string | null;
   network: string | null;
   createdAt: Date;

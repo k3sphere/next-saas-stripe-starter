@@ -84,7 +84,20 @@ export const GET = auth(async (req) => {
           },
         }
       });
-      return new Response(JSON.stringify(cluster), { status: 200 });
+      if (!cluster) {
+        return new Response("not found", { status: 404 });
+      }
+      const member = await prisma.member.findFirst({
+        where: {
+          userId: currentUser.id,
+          clusterId: cluster.id
+        },
+        select: {
+          role: true,
+        },
+      });
+
+      return new Response(JSON.stringify({...cluster, role: member?.role}), { status: 200 });
     } catch (error) {
       return new Response("Internal server error", { status: 500 });
     }

@@ -43,6 +43,7 @@ export function ClusterInfo() {
             {cluster?.name}
           </Link>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {cluster?.role === "owner" &&
           <Button
             className="font-semibold hover:underline"
             onClick={async () => {
@@ -58,6 +59,7 @@ export function ClusterInfo() {
           >
             Delete
           </Button>
+          }
         </TableCell>
         </TableRow>
         <TableRow>

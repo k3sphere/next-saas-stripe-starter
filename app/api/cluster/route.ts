@@ -34,7 +34,14 @@ export const GET = auth(async (req) => {
       },
       select: {
         role: true,
-        cluster: true,
+        cluster: {
+          select: {
+            id: true,
+            name: true,
+            location: true,
+            publicKey: true,
+          }
+        },
       },
     });
     const clusters = members.map((mem)=>{return {...mem.cluster, role: mem.role}});
