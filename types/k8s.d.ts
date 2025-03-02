@@ -22,6 +22,7 @@ export interface ClusterNode {
   name:       String
   port:       Int
   username:   String
+  platform:   String
   ip:         String
   publicIp?:   String
   gateway?:    Node

@@ -8,16 +8,14 @@ import { Button } from "../ui/button";
 // import { formatDate } from "~/lib/utils";
 
 interface NodeItemProps {
-  node: Pick<ClusterNode, "id" | "name" | "ip" | "port" | "username">;
+  node: Pick<ClusterNode, "id" | "name" | "ip" | "port" | "username" | "platform">;
 }
 
 export function NodeItem({ node }: NodeItemProps) {
   return (
     <TableBody className="divide-y divide-gray-100">
       <TableRow key={String(node.id)}>
-        <TableCell className="text-left">
-        {node.id}
-        </TableCell>
+
         <TableCell className="font-medium">
           <Link
             target="_blank"
@@ -29,9 +27,14 @@ export function NodeItem({ node }: NodeItemProps) {
         </TableCell>
         <TableCell className="text-left">{node.ip}</TableCell>
         <TableCell className="text-left">
+        {node.platform}
+        </TableCell>
+        <TableCell className="text-left">
         </TableCell>
         <TableCell className="text-left">{node.name}</TableCell>
-        <TableCell className="text-left"><Button onClick={()=>{
+        <TableCell className="text-left">
+          {node.platform === "windows" &&
+          <Button onClick={()=>{
               fetch(`/api/cluster/home/service`, {
                 method: "POST",
                 headers: {
@@ -46,7 +49,27 @@ export function NodeItem({ node }: NodeItemProps) {
               }).then(async (res) => {
                 console.log(await res.text())
               });
-        }}>RDP</Button></TableCell>
+        }}>RDP</Button>
+      }
+                {node.platform !== "windows" &&
+          <Button onClick={()=>{
+              fetch(`/api/cluster/home/service`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({name: "ssh", namespace: node.id, ports: [{
+                  name: "ssh",
+                  protocol: "ssh",
+                  port: 22,
+                  nodePort: 22
+                }]}),
+              }).then(async (res) => {
+                console.log(await res.text())
+              });
+        }}>SSH</Button>
+      }
+        </TableCell>
 
       </TableRow>
     </TableBody>

@@ -161,6 +161,7 @@ model Machine {
   port              Int
   username          String
   ip                String
+  platform          String?
   publicIp          String?  @map(name: "public_ip")
   gatewayId         String?  @map(name: "gateway_id")
   createdAt         DateTime @default(now()) @map(name: "created_at")
