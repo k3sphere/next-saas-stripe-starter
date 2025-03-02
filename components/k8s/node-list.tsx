@@ -33,15 +33,15 @@ export function NodeList() {
         <div className="divide-y divide-border rounded-md border">
               <div className="flex items-center justify-between p-4">
                 <Table className="divide-y divide-gray-200">
-                  <TableCaption>A list of your k8s cluster .</TableCaption>
+                  <TableCaption>A list of your vm node .</TableCaption>
                   <TableHeader>
                     <TableRow className="hover:bg-gray-50">
-                      <TableHead>ID</TableHead>
                       <TableHead className="w-[100px]">Name</TableHead>
                       <TableHead>IP</TableHead>
+                      <TableHead>Platform</TableHead>
                       <TableHead>UpdatedAt</TableHead>
                       <TableHead>Plan</TableHead>
-                      <TableHead>Status</TableHead>
+                      <TableHead>Action</TableHead>
                     </TableRow>
                   </TableHeader>
                   {nodes.map((node) => (

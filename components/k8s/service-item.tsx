@@ -18,19 +18,18 @@ export function ServiceItem({ node }: NodeItemProps) {
         {node.name}
         </TableCell>
         <TableCell className="font-medium">
-          <Link
-            target="_blank"
-            href={`https://ssh.k3sphere.com/${String(node.name)}/${String(node.name)}/${String(node.name)}/${String(node.name)}`}
-            className="font-semibold hover:underline"
-          >
-            {node.name}
-          </Link>
+         
+          {node.name}
+        
         </TableCell>
-        <TableCell className="text-left">{node.name}</TableCell>
+        <TableCell className="text-left">{node.namespace}</TableCell>
         <TableCell className="text-left">
+          {node.ports.map((item)=>{
+            return <p>{item.name} {item.protocol} {item.nodePort}:{item.port}</p>
+          })}
         </TableCell>
-        <TableCell className="text-left">{node.name}</TableCell>
-        <TableCell className="text-left">RUNNING</TableCell>
+        <TableCell className="text-left"></TableCell>
+        <TableCell className="text-left"></TableCell>
 
       </TableRow>
     </TableBody>
