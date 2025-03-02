@@ -43,7 +43,7 @@ export function ClusterInfo() {
             {cluster?.name}
           </Link>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {cluster?.role === "owner" &&
+          {cluster?.role === "OWNER" &&
           <Button
             className="font-semibold hover:underline"
             onClick={async () => {
