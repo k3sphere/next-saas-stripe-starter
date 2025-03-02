@@ -126,7 +126,7 @@ async function getNextAvailablePort(location: string) {
     orderBy: { relayPort: 'desc' },
     select: { relayPort: true }
   });
-
+  if (maxPort && maxPort.relayPort >= 41000) return -1;
   return maxPort ? maxPort.relayPort + 1 : 10001; 
 }
 
