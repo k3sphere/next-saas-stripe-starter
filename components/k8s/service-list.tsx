@@ -11,8 +11,9 @@ import { ServiceItem } from "./service-item";
 
 export function ServiceList() {
   const [services, setServices] = useState<Service[]>([])
+
+  const clusterId = localStorage.getItem("cluster");
   useEffect(()=> {
-    const clusterId = localStorage.getItem("cluster");
     if(clusterId) {
 
       fetch(`/api/cluster/${clusterId}/service`, {
@@ -34,21 +35,22 @@ export function ServiceList() {
         <div className="divide-y divide-border rounded-md border">
               <div className="flex items-center justify-between p-4">
                 <Table className="divide-y divide-gray-200">
-                  <TableCaption>A list of your k8s cluster .</TableCaption>
+                  <TableCaption>A list of your k8s services .</TableCaption>
                   <TableHeader>
                     <TableRow className="hover:bg-gray-50">
                       <TableHead>ID</TableHead>
                       <TableHead className="w-[100px]">Name</TableHead>
-                      <TableHead>IP</TableHead>
-                      <TableHead>UpdatedAt</TableHead>
-                      <TableHead>Plan</TableHead>
-                      <TableHead>Status</TableHead>
+                      <TableHead>Namespace</TableHead>
+                      <TableHead>Ports</TableHead>
+                      <TableHead>Action</TableHead>
+                      <TableHead></TableHead>
                     </TableRow>
                   </TableHeader>
                   {services.map((node) => (
                     <ServiceItem
                       key={String(node.name)}
                       node={node}
+                      cluster={clusterId}
                     ></ServiceItem>
                   ))}
                 </Table>

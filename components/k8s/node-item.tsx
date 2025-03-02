@@ -8,10 +8,11 @@ import { Button } from "../ui/button";
 // import { formatDate } from "~/lib/utils";
 
 interface NodeItemProps {
+  cluster: string | null
   node: Pick<ClusterNode, "id" | "name" | "ip" | "port" | "username" | "platform">;
 }
 
-export function NodeItem({ node }: NodeItemProps) {
+export function NodeItem({ cluster, node }: NodeItemProps) {
   return (
     <TableBody className="divide-y divide-gray-100">
       <TableRow key={String(node.id)}>
@@ -35,7 +36,7 @@ export function NodeItem({ node }: NodeItemProps) {
         <TableCell className="text-left">
           {node.platform === "windows" &&
           <Button onClick={()=>{
-              fetch(`/api/cluster/home/service`, {
+              fetch(`/api/cluster/${cluster}/service`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",

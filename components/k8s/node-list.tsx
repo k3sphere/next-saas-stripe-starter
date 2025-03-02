@@ -10,8 +10,9 @@ import {  NodeItem } from "./node-item";
 
 export function NodeList() {
   const [nodes, setNodes] = useState<ClusterNode[]>([])
+  const clusterId = localStorage.getItem("cluster");
   useEffect(()=> {
-    const clusterId = localStorage.getItem("cluster");
+
     if(clusterId) {
 
       fetch(`/api/cluster/${clusterId}/node`, {
@@ -48,6 +49,7 @@ export function NodeList() {
                     <NodeItem
                       key={String(node.id)}
                       node={node}
+                      cluster={clusterId}
                     ></NodeItem>
                   ))}
                 </Table>

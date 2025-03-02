@@ -2,15 +2,17 @@ import Link from "next/link";
 
 import type { Cluster, ClusterNode, Service } from "@/types/k8s";
 import { TableBody, TableCell, TableRow } from "../ui/table";
+import { Button } from "../ui/button";
 
 // import { ClusterOperations } from "~/components/k8s/cluster-operation";
 // import { formatDate } from "~/lib/utils";
 
 interface NodeItemProps {
+  cluster: string | null
   node: Pick<Service, "name"  | "namespace" | "ports">;
 }
 
-export function ServiceItem({ node }: NodeItemProps) {
+export function ServiceItem({ cluster, node }: NodeItemProps) {
   return (
     <TableBody className="divide-y divide-gray-100">
       <TableRow key={String(node.name)}>
