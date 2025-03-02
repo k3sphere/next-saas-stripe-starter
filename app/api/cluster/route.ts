@@ -33,10 +33,11 @@ export const GET = auth(async (req) => {
         delete: false
       },
       select: {
+        role: true,
         cluster: true,
       },
     });
-    const clusters = members.map((mem)=>mem.cluster);
+    const clusters = members.map((mem)=>{return {...mem.cluster, role: mem.role}});
     return new Response(JSON.stringify(clusters), { status: 200 });
   } catch (error) {
     return new Response("Internal server error", { status: 500 });
