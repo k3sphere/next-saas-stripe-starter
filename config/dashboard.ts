@@ -16,21 +16,7 @@ export const sidebarLinks: SidebarNavItem[] = [
       { href: "/dashboard/nodes", icon: "dashboard", title: "Nodes" },
       { href: "/dashboard/members", icon: "lineChart", title: "Members" },
       { href: "/dashboard/services", icon: "lineChart", title: "Services" },
-      { href: "/dashboard/cdn", icon: "lineChart", title: "CDN" },
-      {
-        href: "/admin/orders",
-        icon: "package",
-        title: "Orders",
-        badge: 2,
-        authorizeOnly: UserRole.ADMIN,
-      },
-      {
-        href: "#/dashboard/posts",
-        icon: "post",
-        title: "User Posts",
-        authorizeOnly: UserRole.USER,
-        disabled: true,
-      },
+
     ],
   },
   {
