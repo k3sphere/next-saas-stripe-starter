@@ -52,6 +52,7 @@ export interface Cluster {
 export interface Service {
   name:       string
   namespace:  string
+  ip: string[]
   ports: ServicePort[]
 }
 

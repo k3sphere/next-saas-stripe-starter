@@ -54,7 +54,7 @@ export function NodeItem({ cluster, node }: NodeItemProps) {
       }
                 {node.platform !== "windows" &&
           <Button onClick={()=>{
-              fetch(`/api/cluster/home/service`, {
+              fetch(`/api/cluster/${cluster}/service`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",

@@ -42,6 +42,7 @@ export const GET = auth(async (req) => {
                 name: true,
                 namespace: true,
                 ports: true,
+                ip: true,
               }
             }
           }

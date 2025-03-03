@@ -9,7 +9,7 @@ import { Button } from "../ui/button";
 
 interface NodeItemProps {
   cluster: string | null
-  node: Pick<Service, "name"  | "namespace" | "ports">;
+  node: Pick<Service, "name"  | "namespace" | "ports" | "ip">;
 }
 
 export function ServiceItem({ cluster, node }: NodeItemProps) {
@@ -26,12 +26,28 @@ export function ServiceItem({ cluster, node }: NodeItemProps) {
         </TableCell>
         <TableCell className="text-left">{node.namespace}</TableCell>
         <TableCell className="text-left">
-          {node.ports.map((item)=>{
+          {node.ip.map((item)=>{
+            return <p>{item}</p>
+          })}
+        </TableCell>
+        <TableCell className="text-left">
+        {node.ports.map((item)=>{
             return <p>{item.protocol} {item.port}:{item.relayPort}</p>
           })}
         </TableCell>
-        <TableCell className="text-left"></TableCell>
-        <TableCell className="text-left"></TableCell>
+        <TableCell className="text-left">
+        <Button onClick={()=>{
+              fetch(`/api/cluster/${cluster}/service/${node.namespace}:${node.name}`, {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                
+              }).then(async (res) => {
+                window.location.reload
+              });
+        }}>Delete</Button>
+        </TableCell>
 
       </TableRow>
     </TableBody>
