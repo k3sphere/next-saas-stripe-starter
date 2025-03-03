@@ -26,6 +26,7 @@ export const GET = auth(async (req) => {
         name: true,
         location: true,
         apiKey: true,
+        publicKey: true,
         userId: true,
         relays: {
           select: {
