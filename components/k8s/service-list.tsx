@@ -41,6 +41,7 @@ export function ServiceList() {
                       <TableHead>ID</TableHead>
                       <TableHead className="w-[100px]">Name</TableHead>
                       <TableHead>Namespace</TableHead>
+                      <TableHead>IPs</TableHead>
                       <TableHead>Ports</TableHead>
                       <TableHead>Action</TableHead>
                       <TableHead></TableHead>
