@@ -1,13 +1,11 @@
 #!/bin/bash
 
-# Check if the required arguments are provided
-if [ $# -ne 2 ]; then
-    echo "Usage: $0 <key> <swarmKey>"
+# Check if the required environment variables are set
+if [ -z "$KEY" ] || [ -z "$SWARM_KEY" ]; then
+    echo "Error: Missing environment variables."
+    echo "Usage: KEY=<your_key> SWARM_KEY=<your_swarm_key> curl -sfL https://k3sphere.com/scripts/service.sh | sh -"
     exit 1
 fi
-
-KEY=$1
-SWARM_KEY=$2
 
 # Define service file path
 SERVICE_FILE="/etc/systemd/system/reverse-proxy.service"
