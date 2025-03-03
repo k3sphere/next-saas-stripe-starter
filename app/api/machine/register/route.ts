@@ -41,7 +41,7 @@ export const POST = auth(async (req) => {
 
 
 
-    const { id, ip, name, vlan, gateway, port, publicIp, username } =
+    const { id, ip, name, vlan, gateway, port, publicIp, username, platform } =
     await req.json();
 
 
@@ -61,6 +61,7 @@ export const POST = auth(async (req) => {
           publicIp,
           clusterId,
           username,
+          platform,
         );
 
 
@@ -122,13 +123,13 @@ async function getMachine(username: string, gateway: any) {
     }
   })
 }
-async function registerMachine(id: string, ip: string, name: string, vlan: string, gatewayId: string | null, port: number, publicIp: string | null, clusterId: string, username: string | null) {
+async function registerMachine(id: string, ip: string, name: string, vlan: string, gatewayId: string | null, port: number, publicIp: string | null, clusterId: string, username: string | null, platform: string | null) {
    await prisma.machine.upsert({where: {
     id: id,
   },create: {
-    id,ip,name,vlan,gatewayId,port,publicIp: publicIp===""?null:publicIp,clusterId, username: username?username:""
+    id,ip,name,vlan,gatewayId,port,publicIp: publicIp===""?null:publicIp,clusterId, username: username?username:"",platform
    },update: {
-    ip,name,vlan,gatewayId,port,publicIp: publicIp===""?null:publicIp,clusterId,username: username?username:""
+    ip,name,vlan,gatewayId,port,publicIp: publicIp===""?null:publicIp,clusterId,username: username?username:"",platform
   }})
 }
 
