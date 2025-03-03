@@ -92,6 +92,7 @@ export const POST = auth(async (req) => {
         publicIp,
         clusterId,
         username,
+        platform,
       );
 
 
