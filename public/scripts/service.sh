@@ -17,7 +17,7 @@ Description=Reverse Proxy Service
 After=network.target
 
 [Service]
-ExecStart=$(pwd)/reverse-proxy --key=$KEY --swarmKey=$SWARM_KEY
+ExecStart=/root/reverse-proxy --key=$KEY --swarmKey=$SWARM_KEY
 Restart=always
 User=$(whoami)
 WorkingDirectory=$(pwd)
