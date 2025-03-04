@@ -20,7 +20,7 @@ export function MemberItem({ cluster, member }: MemberItemProps) {
         <TableCell className="font-medium">
           <Link
             target="_blank"
-            href={`https://ssh.k3sphere.com/dashboard/cluster/${cluster}/members/${String(member.id)}`}
+            href={`https://k3sphere.com/dashboard/cluster/${cluster}/members/${String(member.id)}`}
             className="font-semibold hover:underline"
           >
             {member.name}
