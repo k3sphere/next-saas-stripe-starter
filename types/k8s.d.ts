@@ -1,3 +1,5 @@
+import { UserRole } from "@prisma/client";
+
 interface ClusterStatus {
   PENDING: "PENDING";
   CREATING: "CREATING";
@@ -29,10 +31,10 @@ export interface ClusterNode {
 }
 
 export interface ClusterMember {
-  id:         String
-  name:       String
-  role:       String
-  email:      String
+  id:         string | null
+  name:       string | null
+  role?:       UserRole
+  email:      string | null
 }
 
 export interface Cluster {

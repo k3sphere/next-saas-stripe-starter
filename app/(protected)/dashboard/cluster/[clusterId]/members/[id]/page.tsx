@@ -6,48 +6,50 @@ import { prisma } from "@/lib/db";
 import { ClusterConfig } from "@/components/k8s/cluster-config";
 import type { Cluster } from "@/types/k8s";
 import { getCurrentUser } from "@/lib/session";
+import { MemberConfig } from "@/components/k8s/member-config";
+import { UserRole } from "@prisma/client";
 
-async function getClusterForUser(clusterId: Cluster["id"], userId: User["id"]) {
-  const member =  await prisma.member.findFirst({
+async function getMemberForCluster(clusterId: Cluster["id"], userId: User["id"]) {
+  return await prisma.member.findFirst({
     where: {
       clusterId: clusterId,
       userId: userId,
     },
     select: {
-      cluster: true
+      id: true,
+      name: true,
+      email: true,
+      role: true,
     }
   });
-  return member?.cluster
 }
 
-interface EditorClusterProps {
+interface EditorMemberProps {
   params: {
+    id: string;
     clusterId: string;
     lang: string;
   };
 }
 
-export default async function EditorClusterPage({
+export default async function EditorMemberPage({
   params,
-}: EditorClusterProps) {
+}: EditorMemberProps) {
   const user = await getCurrentUser();
   if (!user) {
     redirect("/login");
   }
 
   // console.log("EditorClusterPage user:" + user.id + "params:", params);
-  const cluster = params.clusterId === "new" ? {id: "", name: "", location: ""} : await getClusterForUser(params.clusterId, user.id);
+  const cluster = params.clusterId === "new" ? {id: "", name: "", email: "", role: UserRole.USER} : await getMemberForCluster(params.id, params.clusterId);
 
   if (!cluster) {
     notFound();
   }
   return (
-    <ClusterConfig
-      cluster={{
-        id: cluster.id,
-        name: cluster.name,
-        location: cluster.location,
-      }}
+    <MemberConfig
+      cluster= {params.clusterId}
+      member={cluster}
       params={{ lang: params.lang }}
     />
   );
