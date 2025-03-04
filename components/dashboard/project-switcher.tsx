@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/popover";
 import { useRouter } from "next/navigation";
 import useCluster from "@/hooks/use-cluster";
+import { Cluster } from "@/types/k8s";
 
 type ProjectType = {
   id: string
@@ -85,8 +86,8 @@ function ProjectList({
   setOpenPopover,
   onSelect,
 }: {
-  selected: ProjectType;
-  projects: ProjectType[];
+  selected: Cluster | null;
+  projects: Cluster[];
   setOpenPopover: (open: boolean) => void;
   onSelect: (value: any) => void;
 }) {
