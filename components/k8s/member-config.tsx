@@ -152,9 +152,9 @@ export function MemberConfig({ member, params: { lang } }: MemberProps) {
                               <SelectContent>
                                 <SelectGroup>
                                   <SelectLabel>Role</SelectLabel>
-                                  <SelectItem value="newyork">OWNER</SelectItem>
-                                  <SelectItem value="newyork">ADMIN</SelectItem>
-                                  <SelectItem value="eu-north-1">USER</SelectItem>
+                                  <SelectItem value="OWNER">OWNER</SelectItem>
+                                  <SelectItem value="ADMIN">ADMIN</SelectItem>
+                                  <SelectItem value="USER">USER</SelectItem>
                                 </SelectGroup>
                               </SelectContent>
                             </Select>
