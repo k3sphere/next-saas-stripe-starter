@@ -13,7 +13,7 @@ async function getMemberForCluster(clusterId: Cluster["id"], userId: User["id"])
   return await prisma.member.findFirst({
     where: {
       clusterId: clusterId,
-      userId: userId,
+      email: userId,
     },
     select: {
       id: true,
