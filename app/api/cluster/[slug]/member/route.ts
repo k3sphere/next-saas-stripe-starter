@@ -83,7 +83,7 @@ export const POST = auth(async (req) => {
     if (member == null || member.role !== "OWNER") {
       return new Response("No access", { status: 401 });
     }
-    const clusters = await prisma.member.create({ data: { email,name,role,clusterId}});
+    const clusters = await prisma.member.create({ data: { email,name,role,clusterId,synched:false}});
     return new Response(JSON.stringify(clusters), { status: 200 });
   } catch (error) {
     console.log(error)
