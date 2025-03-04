@@ -6,6 +6,7 @@ import { Cluster, ClusterMember, ClusterNode } from "@/types/k8s";
 import { useEffect, useState } from "react";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import {  NodeItem } from "./node-item";
+import { MemberItem } from "./member-item";
 
 
 export function MemberList() {

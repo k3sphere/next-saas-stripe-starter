@@ -9,30 +9,30 @@ import { Button } from "../ui/button";
 
 interface MemberItemProps {
   cluster: string | null
-  node: Pick<ClusterMember, "id" | "name" | "email" | "role" >;
+  member: Pick<ClusterMember, "id" | "name" | "email" | "role" >;
 }
 
-export function MemberItem({ cluster, node }: MemberItemProps) {
+export function MemberItem({ cluster, member }: MemberItemProps) {
   return (
     <TableBody className="divide-y divide-gray-100">
-      <TableRow key={String(node.id)}>
+      <TableRow key={String(member.id)}>
 
         <TableCell className="font-medium">
           <Link
             target="_blank"
-            href={`https://ssh.k3sphere.com/${String(node.id)}/${String(node.name)}/${String(node.name)}/${String(node.name)}`}
+            href={`https://ssh.k3sphere.com/${String(member.id)}/${String(member.name)}/${String(member.name)}/${String(member.name)}`}
             className="font-semibold hover:underline"
           >
-            {node.name}
+            {member.name}
           </Link>
         </TableCell>
-        <TableCell className="text-left">{node.name}</TableCell>
+        <TableCell className="text-left">{member.name}</TableCell>
         <TableCell className="text-left">
-        {node.role}
+        {member.role}
         </TableCell>
         <TableCell className="text-left">
         </TableCell>
-        <TableCell className="text-left">{node.name}</TableCell>
+        <TableCell className="text-left">{member.name}</TableCell>
         <TableCell className="text-left">
  
         </TableCell>
