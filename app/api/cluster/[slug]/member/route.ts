@@ -23,7 +23,17 @@ export const GET = auth(async (req) => {
       where: {
         clusterId: slug,
       },
-
+      select: {
+        id: true,
+        name: true,
+        role: true,
+        email: true,
+        cluster: {
+          select: {
+            name: true,
+          }
+        }
+      }
     });
     return new Response(JSON.stringify(nodes), { status: 200 });
   } catch (error) {

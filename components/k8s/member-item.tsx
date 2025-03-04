@@ -9,7 +9,7 @@ import { Button } from "../ui/button";
 
 interface MemberItemProps {
   cluster: string | null
-  member: Pick<ClusterMember, "id" | "name" | "email" | "role" >;
+  member: Pick<ClusterMember, "id" | "name" | "email" | "role" | "cluster" >;
 }
 
 export function MemberItem({ cluster, member }: MemberItemProps) {
@@ -20,7 +20,7 @@ export function MemberItem({ cluster, member }: MemberItemProps) {
         <TableCell className="font-medium">
           <Link
             target="_blank"
-            href={`/dashboard/members/${String(member.id)}`}
+            href={`/dashboard/members/${member.cluster?.name}/${String(member.id)}`}
             className="font-semibold hover:underline"
           >
             {member.name}

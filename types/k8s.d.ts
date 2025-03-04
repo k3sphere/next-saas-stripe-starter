@@ -35,6 +35,7 @@ export interface ClusterMember {
   name:       string | null
   role?:       UserRole
   email:      string | null
+  cluster:  Cluster | null
 }
 
 export interface Cluster {
