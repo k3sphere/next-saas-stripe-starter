@@ -28,6 +28,13 @@ export interface ClusterNode {
   gateway?:    Node
 }
 
+export interface ClusterMember {
+  id:         String
+  name:       String
+  role:       String
+  email:      String
+}
+
 export interface Cluster {
   id: string;
   name: string;

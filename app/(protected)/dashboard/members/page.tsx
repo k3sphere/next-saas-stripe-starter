@@ -4,7 +4,7 @@ import type { User } from "next-auth";
 import { prisma } from "@/lib/db";
 
 import type { Cluster } from "@/types/k8s";
-import {NodeList} from "@/components/k8s/node-list"; // Adjust the import path as necessary
+import {MemberList} from "@/components/k8s/member-list"; // Adjust the import path as necessary
 import { getCurrentUser } from "@/lib/session";
 
 interface ClusterNodesProps {
@@ -24,6 +24,6 @@ export default async function ClusterNodesPage({
 
  
   return (
-    <NodeList />
+    <MemberList />
   );
 }
