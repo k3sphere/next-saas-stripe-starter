@@ -8,7 +8,7 @@ import { Icons } from "@/components/shared/icons";
 
 export default async function HeroLanding() {
   const { stargazers_count: stars } = await fetch(
-    "https://api.github.com/repos/mickasmt/next-saas-stripe-starter",
+    "https://api.github.com/repos/k3sphere/podman",
     {
       ...(env.GITHUB_OAUTH_TOKEN && {
         headers: {
