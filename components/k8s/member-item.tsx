@@ -7,12 +7,12 @@ import { Button } from "../ui/button";
 // import { ClusterOperations } from "~/components/k8s/cluster-operation";
 // import { formatDate } from "~/lib/utils";
 
-interface NodeItemProps {
+interface MemberItemProps {
   cluster: string | null
   node: Pick<ClusterMember, "id" | "name" | "email" | "role" >;
 }
 
-export function NodeItem({ cluster, node }: NodeItemProps) {
+export function MemberItem({ cluster, node }: MemberItemProps) {
   return (
     <TableBody className="divide-y divide-gray-100">
       <TableRow key={String(node.id)}>
