@@ -18,9 +18,9 @@ import { Label } from "../ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Button } from "../ui/button";
 import { Icons } from "../shared/icons";
+import useCluster from "@/hooks/use-cluster";
 
 interface MemberProps {
-  cluster: string,
   member: Pick<ClusterMember, "id" | "name" | "email" | "role">;
   params: {
     lang: string;
@@ -39,7 +39,7 @@ const FormSchema = z.object({
 });
 
 
-export function MemberConfig({ cluster, member, params: { lang } }: MemberProps) {
+export function MemberConfig({ member, params: { lang } }: MemberProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     defaultValues: {
       name: member.name??"", // default value
@@ -49,11 +49,12 @@ export function MemberConfig({ cluster, member, params: { lang } }: MemberProps)
     resolver: zodResolver(FormSchema),
   });
   const router = useRouter();
+  const {selected} = useCluster()
   const [_isSaving, setIsSaving] = useState<boolean>(false);
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSaving(true);
-    const response = await fetch(`/api/cluster/${cluster}/member`, {
+    const response = await fetch(`/api/cluster/${selected?.id}/member`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

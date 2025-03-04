@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 
 
 const useCluster = () => {
-  const [clusters, setClusters] = useState<any[]>([]);
-  const [selected, setSelected] = useState<any>(null);
+  const [clusters, setClusters] = useState<Cluster[]>([]);
+  const [selected, setSelected] = useState<Cluster | null>(null);
 
   useEffect(() => {
     // Retrieve from localStorage

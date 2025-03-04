@@ -20,7 +20,7 @@ export function MemberItem({ cluster, member }: MemberItemProps) {
         <TableCell className="font-medium">
           <Link
             target="_blank"
-            href={`/dashboard/members/${member.cluster?.name}/${String(member.id)}`}
+            href={`/dashboard/members/${String(member.id)}`}
             className="font-semibold hover:underline"
           >
             {member.name}

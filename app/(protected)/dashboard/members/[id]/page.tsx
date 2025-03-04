@@ -26,7 +26,6 @@ async function getMemberForCluster(userId: User["id"]) {
 interface EditorMemberProps {
   params: {
     id: string;
-    clusterId: string;
     lang: string;
   };
 }
@@ -47,7 +46,6 @@ export default async function EditorMemberPage({
   }
   return (
     <MemberConfig
-      cluster= {params.clusterId}
       member={cluster}
       params={{ lang: params.lang }}
     />
