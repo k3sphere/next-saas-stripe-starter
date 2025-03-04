@@ -9,11 +9,10 @@ import { getCurrentUser } from "@/lib/session";
 import { MemberConfig } from "@/components/k8s/member-config";
 import { UserRole } from "@prisma/client";
 
-async function getMemberForCluster(clusterId: Cluster["id"], userId: User["id"]) {
+async function getMemberForCluster(userId: User["id"]) {
   return await prisma.member.findFirst({
     where: {
-      clusterId: clusterId,
-      email: userId,
+      id: userId,
     },
     select: {
       id: true,
@@ -41,7 +40,7 @@ export default async function EditorMemberPage({
   }
 
   // console.log("EditorClusterPage user:" + user.id + "params:", params);
-  const cluster = params.clusterId === "new" ? {id: "", name: "", email: "", role: UserRole.USER} : await getMemberForCluster( params.clusterId,params.id);
+  const cluster = params.clusterId === "new" ? {id: "", name: "", email: "", role: UserRole.USER} : await getMemberForCluster( params.id);
 
   if (!cluster) {
     notFound();
