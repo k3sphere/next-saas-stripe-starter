@@ -50,6 +50,7 @@ export interface Cluster {
   apiKey: string | null;
   network: string | null;
   createdAt: Date;
+  color?: string | null;
   updatedAt: Date;
   delete: boolean | null;
   host: string | null;
