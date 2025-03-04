@@ -41,7 +41,7 @@ export default async function EditorMemberPage({
   }
 
   // console.log("EditorClusterPage user:" + user.id + "params:", params);
-  const cluster = params.clusterId === "new" ? {id: "", name: "", email: "", role: UserRole.USER} : await getMemberForCluster(params.id, params.clusterId);
+  const cluster = {id: "", name: "", email: "", role: UserRole.USER} ;
 
 
   return (
