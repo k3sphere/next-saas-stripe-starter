@@ -212,6 +212,7 @@ model Member {
   userId            String?   @map(name: "user_id")
   role              UserRole
   email             String?
+  name              String?
   delete           Boolean? @default(false)
   synched           Boolean? @default(false)
   createdAt         DateTime @default(now()) @map(name: "created_at")
