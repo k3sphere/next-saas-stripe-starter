@@ -33,7 +33,7 @@ export interface ClusterNode {
 export interface ClusterMember {
   id:         string | null
   name:       string | null
-  role?:       UserRole
+  role:       UserRole | null
   email:      string | null
   cluster:  Cluster | null
 }

@@ -35,7 +35,7 @@ const FormSchema = z.object({
     })
     .max(32, { message: "name must be at most 32 characters." }),
   email: z.string().email(),
-  role: z.string(),
+  role: z.string().nullable(),
 });
 
 
@@ -144,7 +144,7 @@ export function MemberConfig({ member, params: { lang } }: MemberProps) {
                               onValueChange={(val: string) =>
                                 field.onChange(val)
                               }
-                              value={field.value}
+                              value={field.value ?? undefined}
                             >
                               <SelectTrigger>
                                 <SelectValue placeholder="Select a role" />
