@@ -101,6 +101,7 @@ export const PUT = auth(async (req) => {
       },
       data: {
         keyType: body.authenticatorAttachment!,
+        keyId: body.rawId!,
         passKey: body.response.publicKey!,
         counter: counter,
       },
