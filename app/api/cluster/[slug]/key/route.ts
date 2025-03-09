@@ -3,6 +3,8 @@ import { generateRegistrationOptions, verifyRegistrationResponse } from '@simple
 import { prisma } from '@/lib/db';
 import { auth } from '@/auth';
 
+let challengeStore: { [key: string]: string } = {};
+
 export const POST = auth(async (req) => {
   if (!req.auth) {
     return new Response("Not authenticated", { status: 401 });
@@ -12,15 +14,19 @@ export const POST = auth(async (req) => {
   if (!currentUser) {
     return new Response("Invalid user", { status: 401 });
   }
+
   // Step 1: Generate registration options
   const options = await generateRegistrationOptions({
     rpName: "K3Sphere", // Change to your app's name
     rpID: "k3sphere.com", // Change to your domain for production
-    challenge: "some-challenge-stored",
     userID: currentUser.id!,
     userName: currentUser.name!,
     attestationType: "none",
   });
+
+  // Store the challenge in the global variable
+  challengeStore[currentUser.id!] = options.challenge;
+
   console.log(options);
   return new Response(JSON.stringify(options), { status: 200 });
 });
@@ -40,7 +46,7 @@ export const PUT = auth(async (req) => {
   // Step 1: Verify the registration response
   const verification = await verifyRegistrationResponse({
     response: body,
-    expectedChallenge: "some-challenge-stored", // Replace with actual challenge stored during the initial request
+    expectedChallenge: challengeStore[currentUser.id!], // Replace with actual challenge stored during the initial request
     expectedOrigin: "https://k3sphere.com",    // Change for production
     expectedRPID: "k3sphere.com",
   });
