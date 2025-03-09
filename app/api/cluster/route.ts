@@ -63,13 +63,13 @@ export const POST = auth(async (req) => {
     return new Response("Invalid user", { status: 401 });
   }
   const userId = currentUser.id
-  const { name, location } =
+  const { name, location, cidr } =
   await req.json();
-  console.log(name, location)
+  console.log(name, location, cidr)
   const apiKey = generateClientSecret(32)
   
   try {
-    const clusters = await prisma.k8sCluster.create({ data: { userId, name, location, apiKey}});
+    const clusters = await prisma.k8sCluster.create({ data: { userId, name, location, apiKey, cidr}});
     const relays = await prisma.relayServer.findMany({ where: { location}});
     await prisma.clusterRelay.createMany({ data: relays.map((relay) => ({ clusterId: clusters.id, relayId: relay.id}))}) 
     await prisma.member.create({ data: { userId, clusterId: clusters.id, role: "OWNER", name: currentUser.name,synched:true}}) 

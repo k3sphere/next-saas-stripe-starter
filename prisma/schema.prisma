@@ -110,6 +110,7 @@ model K8sCluster {
   ip                String?
   host              String?
   dns               String?
+  cidr              String?
   oidc              Boolean? @default(false)
   createdAt         DateTime @default(now()) @map(name: "created_at")
   updatedAt         DateTime @default(now()) @map(name: "updated_at")

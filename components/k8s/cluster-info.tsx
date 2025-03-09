@@ -75,7 +75,7 @@ export function ClusterInfo() {
         <TableCell className="text-left">{cluster?.id}</TableCell>
         </TableRow>
         <TableRow>
-        <TableCell className="text-left">Client Secret</TableCell>
+        <TableCell className="text-left">VLAN</TableCell>
         <TableCell className="text-left">{cluster?.apiKey}</TableCell>
         </TableRow>
         <TableRow>
