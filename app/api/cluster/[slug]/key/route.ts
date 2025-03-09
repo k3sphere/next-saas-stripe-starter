@@ -16,6 +16,7 @@ export const POST = auth(async (req) => {
   const options = await generateRegistrationOptions({
     rpName: "K3Sphere", // Change to your app's name
     rpID: "k3sphere.com", // Change to your domain for production
+    challenge: "some-challenge-stored",
     userID: currentUser.id!,
     userName: currentUser.name!,
     attestationType: "none",
