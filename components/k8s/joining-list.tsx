@@ -7,10 +7,12 @@ import { useEffect, useState } from "react";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import {  NodeItem } from "./node-item";
 import { MemberItem } from "./member-item";
+import { JoiningKey } from "@prisma/client";
+import { JoiningItem } from "./joining-item";
 
 
 export function JoiningList() {
-  const [members, setMembers] = useState<ClusterMember[]>([])
+  const [members, setMembers] = useState<JoiningKey[]>([])
   const clusterId = localStorage.getItem("cluster");
   useEffect(()=> {
 
@@ -23,7 +25,7 @@ export function JoiningList() {
       }).then(async (res) => {
         if (res.status === 200) {
           // delay to allow for the route change to complete
-          const result = await res.json() as ClusterMember[]
+          const result = await res.json() as JoiningKey[]
 
           setMembers(result);
         }
@@ -47,11 +49,11 @@ export function JoiningList() {
                     </TableRow>
                   </TableHeader>
                   {members.map((member) => (
-                    <MemberItem
+                    <JoiningItem
                       key={String(member.id)}
-                      member={member}
+                      item={member}
                       cluster={clusterId}
-                    ></MemberItem>
+                    ></JoiningItem>
                   ))}
                 </Table>
               </div>

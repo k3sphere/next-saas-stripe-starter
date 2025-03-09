@@ -7,6 +7,7 @@ import type { Cluster } from "@/types/k8s";
 import {MemberList} from "@/components/k8s/member-list"; // Adjust the import path as necessary
 import { getCurrentUser } from "@/lib/session";
 import Link from "next/link";
+import { JoiningList } from "@/components/k8s/joining-list";
 
 interface ClusterNodesProps {
   params: {
@@ -38,7 +39,7 @@ export default async function ClusterNodesPage({
         </Link>
       </div>
     </div>
-    <MemberList />
+    <JoiningList />
     </div>
   );
 }
