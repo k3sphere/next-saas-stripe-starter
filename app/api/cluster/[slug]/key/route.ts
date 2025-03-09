@@ -12,7 +12,6 @@ export const POST = auth(async (req) => {
   if (!currentUser) {
     return new Response("Invalid user", { status: 401 });
   }
-  console.log("register key ", currentUser)
   // Step 1: Generate registration options
   const options = generateRegistrationOptions({
     rpName: "K3Sphere", // Change to your app's name
