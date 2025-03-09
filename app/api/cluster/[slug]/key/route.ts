@@ -21,9 +21,7 @@ export const POST = auth(async (req) => {
     userName: currentUser.name!,
     attestationType: "none",
   });
-
-  // Step 2: Send the options back to the frontend
-  return NextResponse.json(options);
+  return new Response(JSON.stringify(options), { status: 200 });
 });
 
 // Handle the registration verification response
