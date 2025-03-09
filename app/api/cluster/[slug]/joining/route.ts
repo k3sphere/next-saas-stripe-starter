@@ -21,7 +21,7 @@ async function generateClientSecret(length: number = 32): Promise<string> {
       },
     })
     if (!result) {
-      return generateClientSecret(length);
+      return secret;
     }
   }
 
