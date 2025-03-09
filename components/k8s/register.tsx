@@ -3,13 +3,16 @@
 
 import { useState } from "react";
 import { startRegistration } from "@simplewebauthn/browser";
+import useCluster from "@/hooks/use-cluster";
 
 export default function Register() {
   const [userId, setUserId] = useState("");
 
+  const {selected} = useCluster();
+
   const registerPasskey = async () => {
-    const response = await fetch("/api/auth/register", {
-      method: "GET",
+    const response = await fetch("/api/cluster/test/key", {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
     });
 
@@ -18,8 +21,8 @@ export default function Register() {
     try {
       const attestationResponse = await startRegistration(options);
 
-      const verificationResponse = await fetch("/api/auth/register", {
-        method: "POST",
+      const verificationResponse = await fetch(`/api/cluster/${selected?.id}/key`, {
+        method: "PUT",
         body: JSON.stringify(attestationResponse),
         headers: { "Content-Type": "application/json" },
       });

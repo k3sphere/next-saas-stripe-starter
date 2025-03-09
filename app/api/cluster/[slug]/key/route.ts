@@ -3,7 +3,7 @@ import { generateRegistrationOptions, verifyRegistrationResponse } from '@simple
 import { prisma } from '@/lib/db';
 import { auth } from '@/auth';
 
-export const GET = auth(async (req) => {
+export const POST = auth(async (req) => {
   if (!req.auth) {
     return new Response("Not authenticated", { status: 401 });
   }
@@ -27,7 +27,7 @@ export const GET = auth(async (req) => {
 });
 
 // Handle the registration verification response
-export const POST = auth(async (req) => {
+export const PUT = auth(async (req) => {
     if (!req.auth) {
       return new Response("Not authenticated", { status: 401 });
     }
