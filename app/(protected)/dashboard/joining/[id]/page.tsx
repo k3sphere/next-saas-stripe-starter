@@ -9,18 +9,39 @@ import { getCurrentUser } from "@/lib/session";
 import { MemberConfig } from "@/components/k8s/member-config";
 import { UserRole } from "@prisma/client";
 
-async function getMemberForCluster(userId: User["id"]) {
-  return await prisma.member.findFirst({
+async function getMemberForCluster(id: string,  userId: User["id"]) {
+  const result = await prisma.joiningKey.findFirst({
     where: {
-      id: userId,
+      id: id,
     },
     select: {
       id: true,
       name: true,
-      email: true,
+      purpose: true,
+      max: true,
+      counter: true,
+      clusterId: true,
+    }
+  });
+  if (!result) {
+    return null;
+  }
+  // make sure the user has access to the cluster
+  const cluster = await prisma.member.findFirst({
+    where: {
+      clusterId: result.clusterId,
+      userId: userId,
+    },
+    select: {
+      id: true,
       role: true,
     }
   });
+  if (!cluster) {
+    return null;
+  }
+  return result;
+
 }
 
 interface EditorMemberProps {
@@ -39,14 +60,14 @@ export default async function EditorMemberPage({
   }
 
   // console.log("EditorClusterPage user:" + user.id + "params:", params);
-  const cluster = params.id === "new" ? {id: "", name: "", email: "", role: UserRole.USER} : await getMemberForCluster( params.id);
+  const cluster = params.id === "new" ? {id: "", name: "", email: "", role: UserRole.USER} : await getMemberForCluster( params.id, user.id);
 
   if (!cluster) {
     notFound();
   }
   return (
-    <MemberConfig
-      member={cluster}
+    <JoiningConfig
+      config={cluster}
       params={{ lang: params.lang }}
     />
   );

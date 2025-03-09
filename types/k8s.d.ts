@@ -38,6 +38,14 @@ export interface ClusterMember {
   cluster:  Cluster | null
 }
 
+export interface JoiningKey {
+  id:         string | null
+  name:       string | null
+  purpose:    string | null
+  max:      number | null
+  counter:  number | null
+}
+
 export interface Cluster {
   id: string;
   name: string;
