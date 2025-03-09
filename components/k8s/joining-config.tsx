@@ -59,7 +59,7 @@ export function JoiningConfig({ config, params: { lang } }: MemberProps) {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSaving(true);
-    const response = await fetch(`/api/cluster/${selected?.id}/member`, {
+    const response = await fetch(`/api/cluster/${selected?.id}/joining`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
