@@ -56,6 +56,7 @@ export const GET = auth(async (req) => {
         max: true,
         counter: true,
         expireDate: true,
+        tags: true,
         cluster: {
           select: {
             name: true,
@@ -81,8 +82,8 @@ export const POST = auth(async (req) => {
     return new Response("Invalid user", { status: 401 });
   }
   const userId = currentUser.id
-  const {  name,purpose,max,expireDate } =
-  await req.json() as { name: string, purpose: string, max: number, expireDate: Date | null };
+  const {  name,purpose,max,expireDate, tags } =
+  await req.json() as { name: string, purpose: string, max: number, tags: string[], expireDate: Date | null };
   const { pathname } = req.nextUrl;
   const segments = pathname.split("/")
   const clusterId = segments[segments.length-2]; // Get the last segment
@@ -114,7 +115,7 @@ export const POST = auth(async (req) => {
     if(key == "") {
       return new Response("Internal server error", { status: 500 });
     }
-    const clusters = await prisma.joiningKey.create({ data: { clusterId, name, purpose, max, expireDate, key }});
+    const clusters = await prisma.joiningKey.create({ data: { clusterId, name, purpose, max, expireDate, key, tags }});
     return new Response(JSON.stringify(clusters), { status: 200 });
   } catch (error) {
     console.log(error)

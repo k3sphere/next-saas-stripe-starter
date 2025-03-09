@@ -41,6 +41,7 @@ const FormSchema = z.object({
   counter: z.number(),
   expireDate: z.date().nullable(),
   key: z.string(),
+  tags: z.array(z.string()).optional(), // Add tags field
 });
 
 export function JoiningConfig({ config, params: { lang } }: MemberProps) {
@@ -51,7 +52,8 @@ export function JoiningConfig({ config, params: { lang } }: MemberProps) {
       max: config.max ?? 0,
       counter: config.counter ?? 0,
       expireDate: config.expireDate ? new Date(config.expireDate) : null,
-      key: config.key?? "",
+      key: config.key ?? "",
+      tags: [], // default value for tags
     },
     resolver: zodResolver(FormSchema),
   });
@@ -115,7 +117,30 @@ export function JoiningConfig({ config, params: { lang } }: MemberProps) {
             </div>
           </CardContent>
           <CardContent className="w-2/3 space-y-6">
-            <div className="grid w-full items-center gap-4">
+            <div className="w/full grid items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <FormField
+                  control={form.control}
+                  name="tags"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tags</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Add tags separated by commas"
+                          value={field.value?.join(", ") || ""}
+                          onChange={(e) => field.onChange(e.target.value.split(",").map(tag => tag.trim()))}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          </CardContent>
+          <CardContent className="w-2/3 space-y-6">
+            <div className="w/full grid items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <FormField
                   control={form.control}
