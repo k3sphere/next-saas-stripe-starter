@@ -254,10 +254,10 @@ model JoiningKey {
   name      String
   purpose   String
   counter   Int  @default(0)
+  expireDate DateTime? @map(name: "expire_date")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
   clusterId    String   @map(name: "cluster_id")
   cluster      K8sCluster     @relation(fields: [clusterId], references: [id], onDelete: Cascade)
-  active    Boolean @default(false)
   @@map(name: "joining_keys")
 }

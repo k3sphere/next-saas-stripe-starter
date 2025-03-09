@@ -20,6 +20,7 @@ async function getMemberForCluster(id: string,  userId: User["id"]) {
       name: true,
       purpose: true,
       max: true,
+      expireDate: true,
       counter: true,
       clusterId: true,
     }
