@@ -34,7 +34,7 @@ export function JoiningItem({ cluster, item }: JoiningItemProps) {
         <TableCell className="text-left">
         {item.counter}
         </TableCell>
-        <TableCell className="text-left">{item.expireDate ? item.expireDate.toISOString() : "N/A"}</TableCell>
+        <TableCell className="text-left">{item.expireDate ? new Date(item.expireDate).toISOString() : ""}</TableCell>
         <TableCell className="text-left">
  
         </TableCell>
