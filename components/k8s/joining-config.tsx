@@ -141,7 +141,11 @@ export function JoiningConfig({ config, params: { lang } }: MemberProps) {
                     <FormItem>
                       <FormLabel>Max</FormLabel>
                       <FormControl>
-                        <Input type="number" {...field} />
+                        <Input
+                          type="number"
+                          value={field.value}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
