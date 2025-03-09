@@ -112,7 +112,7 @@ export function ClusterInfo() {
         <TableCell className="text-left">
           {!cluster?.keyType && 
           <Register />
-    }
+    }{cluster?.keyType}
         </TableCell>
       </TableRow>
     </TableBody>
