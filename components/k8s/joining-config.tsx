@@ -23,7 +23,7 @@ import useCluster from "@/hooks/use-cluster";
 import exp from "constants";
 
 interface MemberProps {
-  config: Pick<JoiningKey, "id" | "name" | "purpose" | "max" | "counter" | "expireDate">;
+  config: Pick<JoiningKey, "id" | "name" | "purpose" | "max" | "counter" | "expireDate" | "key">;
   params: {
     lang: string;
   };
@@ -40,6 +40,7 @@ const FormSchema = z.object({
   max: z.number(),
   counter: z.number(),
   expireDate: z.date().nullable(),
+  key: z.string(),
 });
 
 export function JoiningConfig({ config, params: { lang } }: MemberProps) {
@@ -50,6 +51,7 @@ export function JoiningConfig({ config, params: { lang } }: MemberProps) {
       max: config.max ?? 0,
       counter: config.counter ?? 0,
       expireDate: config.expireDate ? new Date(config.expireDate) : null,
+      key: config.key?? "",
     },
     resolver: zodResolver(FormSchema),
   });
@@ -163,6 +165,25 @@ export function JoiningConfig({ config, params: { lang } }: MemberProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Counter</FormLabel>
+                      <FormControl>
+                        <Input readOnly {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          </CardContent>
+          <CardContent className="w-2/3 space-y-6">
+            <div className="w/full grid items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <FormField
+                  control={form.control}
+                  name="key"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Key</FormLabel>
                       <FormControl>
                         <Input readOnly {...field} />
                       </FormControl>

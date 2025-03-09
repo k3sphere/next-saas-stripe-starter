@@ -45,6 +45,7 @@ export interface JoiningKey {
   max:      number | null
   counter:  number | null
   expireDate: Date | null
+  key:    string | null
 }
 
 export interface Cluster {
