@@ -34,7 +34,12 @@ const FormSchema = z.object({
     })
     .max(32, { message: "name must be at most 32 characters." }),
   location: z.string(),
+  cidr: z.string().regex(
+    /^(\d{1,3}\.){3}\d{1,3}\/\d{1,2}$/,
+    { message: "Invalid CIDR format." }
+  ),
 });
+
 const isValidLocation = (
   location: string,
 ): location is "Stockholm" | "Hong Kong" | "Singapore" | "Tokyo" | "US-West" => {
@@ -48,6 +53,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
     defaultValues: {
       name: cluster.name, // default value
       location: cluster.location,
+      cidr: "", // default value
     },
     resolver: zodResolver(FormSchema),
   });
@@ -156,10 +162,27 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
               </div>
             </div>
           </CardContent>
-          
+          <CardContent className="w-2/3 space-y-6">
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <FormField
+                  control={form.control}
+                  name="cidr"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>CIDR</FormLabel>
+                      <FormControl>
+                        <Input placeholder="CIDR block (e.g., 192.168.0.0/16)" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          </CardContent>
           <div className="w-2/3 space-y-6 p-6 pt-0">
             <Button type="submit" disabled={_isSaving}>
-             
               Submit
             </Button>
           </div>
