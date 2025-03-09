@@ -110,7 +110,7 @@ export function ClusterInfo() {
           Passkey
         </TableCell>
         <TableCell className="text-left">
-          {!cluster?.keyType && 
+          {(cluster && !cluster?.keyType) && 
           <Register />
     }{cluster?.keyType}
         </TableCell>
