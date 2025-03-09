@@ -13,7 +13,7 @@ export const POST = auth(async (req) => {
     return new Response("Invalid user", { status: 401 });
   }
   // Step 1: Generate registration options
-  const options = generateRegistrationOptions({
+  const options = await generateRegistrationOptions({
     rpName: "K3Sphere", // Change to your app's name
     rpID: "k3sphere.com", // Change to your domain for production
     userID: currentUser.id!,
