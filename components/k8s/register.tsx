@@ -14,6 +14,7 @@ export default function Register() {
     const response = await fetch(`/api/cluster/${selected?.id}/key`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
     });
 
     const options = await response.json();
