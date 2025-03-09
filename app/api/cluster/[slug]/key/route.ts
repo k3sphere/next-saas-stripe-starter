@@ -4,7 +4,7 @@ import { prisma } from '@/lib/db';
 import { auth } from '@/auth';
 import { RegistrationResponseJSON } from '@simplewebauthn/server/script/deps';
 
-let challengeStore: { [key: string]: { challenge: string; userId: any } } = {};
+let challengeStore: { [key: string]: string } = {};
 
 export const POST = auth(async (req) => {
   if (!req.auth) {
@@ -15,19 +15,46 @@ export const POST = auth(async (req) => {
   if (!currentUser) {
     return new Response("Invalid user", { status: 401 });
   }
-  const { userId } = await req.json();
+
+  const { pathname } = req.nextUrl;
+  const path = pathname.split("/")
+  path.pop();
+  const clusterId = path.pop(); // Get the last segment
+
+  // Query database using Prisma
+  const cluster = await prisma.k8sCluster.findUnique({
+    where: { id: clusterId  },
+    select: {
+      id: true,
+      name: true,
+      location: true,
+      apiKey: true,
+      publicKey: true,
+      userId: true,
+      relays: {
+        select: {
+          id: true,
+          relay: true,
+        },
+      },
+    }
+  });
+
+  if (!cluster) {
+    return NextResponse.json({ message: 'Authentication failed' }, { status: 401 });
+  }
 
   // Step 1: Generate registration options
   const options = await generateRegistrationOptions({
     rpName: "K3Sphere", // Change to your app's name
     rpID: "k3sphere.com", // Change to your domain for production
-    userID: currentUser.id!,
-    userName: userId,
+    userID: cluster.id,
+    userName: cluster.name,
     attestationType: "none",
   });
 
   // Store the challenge in the global variable
-  challengeStore[currentUser.id!] = { challenge: options.challenge, userId};
+  challengeStore[currentUser.id!] = options.challenge;
 
   console.log(options);
   return new Response(JSON.stringify(options), { status: 200 });
@@ -62,13 +89,12 @@ export const PUT = auth(async (req) => {
   // Step 1: Verify the registration response
   const verification = await verifyRegistrationResponse({
     response: body,
-    expectedChallenge: challengeStore[currentUser.id!].challenge, // Replace with actual challenge stored during the initial request
+    expectedChallenge: challengeStore[currentUser.id!], // Replace with actual challenge stored during the initial request
     expectedOrigin: "https://k3sphere.com",    // Change for production
     expectedRPID: "k3sphere.com",
   });
   if (verification.verified) {
     // save key to database
-    console.log(body, challengeStore[currentUser.id!].userId);
     await prisma.k8sCluster.update({
       where: {
         id: slug
