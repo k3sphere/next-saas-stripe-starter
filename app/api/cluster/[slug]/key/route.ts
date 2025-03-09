@@ -69,16 +69,13 @@ export const PUT = auth(async (req) => {
   if (verification.verified) {
     // save key to database
     console.log(body, challengeStore[currentUser.id!].userId);
-    await prisma.key.create({
+    await prisma.k8sCluster.update({
+      where: {
+        id: slug
+      },
       data: {
-        userId: currentUser.id!,
-        name: challengeStore[currentUser.id!].userId,
-        keyId: body.rawId,
-        clusterId: slug,
-        x: "",
-        y: "",
         keyType: body.authenticatorAttachment!,
-        sshKey: body.response.publicKey!,
+        passKey: body.response.publicKey!,
         counter: counter,
       },
     });

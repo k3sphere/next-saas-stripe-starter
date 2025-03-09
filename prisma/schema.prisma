@@ -111,6 +111,10 @@ model K8sCluster {
   host              String?
   dns               String?
   cidr              String?
+  passKey    String?   @map("pass_key") @db.VarChar(2048)
+  keyType   String?   @map("key_type") @db.VarChar(20)
+  keyId     String?   @map("key_id") @db.VarChar(100)
+  counter           Int?
   oidc              Boolean? @default(false)
   createdAt         DateTime @default(now()) @map(name: "created_at")
   updatedAt         DateTime @default(now()) @map(name: "updated_at")
