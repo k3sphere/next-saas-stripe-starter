@@ -11,7 +11,7 @@ export default function Register() {
   const {selected} = useCluster();
 
   const registerPasskey = async () => {
-    const response = await fetch("/api/cluster/test/key", {
+    const response = await fetch(`/api/cluster/${selected?.id}/key`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     });
