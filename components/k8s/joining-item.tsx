@@ -10,7 +10,7 @@ import { JoiningKey } from "@prisma/client";
 
 interface JoiningItemProps {
   cluster: string | null
-  item: Pick<JoiningKey, "id" | "name" | "purpose" | "max" | "counter" | "expireDate" >;
+  item: Pick<JoiningKey, "id" | "name" | "purpose" | "max" | "counter" | "expireDate" | "tags" >;
 }
 
 export function JoiningItem({ cluster, item }: JoiningItemProps) {
@@ -36,7 +36,7 @@ export function JoiningItem({ cluster, item }: JoiningItemProps) {
         </TableCell>
         <TableCell className="text-left">{item.expireDate ? new Date(item.expireDate).toISOString() : ""}</TableCell>
         <TableCell className="text-left">
- 
+          {item.tags}
         </TableCell>
 
       </TableRow>
