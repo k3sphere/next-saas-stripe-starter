@@ -6,7 +6,6 @@ import { startRegistration } from "@simplewebauthn/browser";
 import useCluster from "@/hooks/use-cluster";
 
 export default function Register() {
-  const [userId, setUserId] = useState("");
 
   const {selected} = useCluster();
 
@@ -14,7 +13,6 @@ export default function Register() {
     const response = await fetch(`/api/cluster/${selected?.id}/key`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId }),
     });
 
     const options = await response.json();
@@ -37,12 +35,7 @@ export default function Register() {
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Enter user ID"
-        value={userId}
-        onChange={(e) => setUserId(e.target.value)}
-      />
+
       <button onClick={registerPasskey}>Register Passkey</button>
     </div>
   );
