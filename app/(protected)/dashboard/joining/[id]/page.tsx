@@ -8,6 +8,7 @@ import type { Cluster } from "@/types/k8s";
 import { getCurrentUser } from "@/lib/session";
 import { MemberConfig } from "@/components/k8s/member-config";
 import { UserRole } from "@prisma/client";
+import { JoiningConfig } from "@/components/k8s/joining-config";
 
 async function getMemberForCluster(id: string,  userId: User["id"]) {
   const result = await prisma.joiningKey.findFirst({
@@ -60,7 +61,7 @@ export default async function EditorMemberPage({
   }
 
   // console.log("EditorClusterPage user:" + user.id + "params:", params);
-  const cluster = params.id === "new" ? {id: "", name: "", email: "", role: UserRole.USER} : await getMemberForCluster( params.id, user.id);
+  const cluster = params.id === "new" ? {id: "", name: "", purpose: "", max:0, counter:0} : await getMemberForCluster( params.id, user.id);
 
   if (!cluster) {
     notFound();
