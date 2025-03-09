@@ -125,6 +125,7 @@ model K8sCluster {
   relays            ClusterRelay[]
   services          Service[]
   members           Member[]
+  joiningKeys       JoiningKey[]
   @@map(name: "clusters")
 }
 
@@ -244,4 +245,15 @@ model Key {
   user User @relation(fields: [userId], references: [id])
 
   @@map(name: "keys")
+}
+
+model JoiningKey {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  clusterId    String   @map(name: "cluster_id")
+  cluster      K8sCluster     @relation(fields: [clusterId], references: [id], onDelete: Cascade)
+
+  @@map(name: "joining_keys")
 }

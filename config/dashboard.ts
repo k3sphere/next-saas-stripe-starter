@@ -15,6 +15,7 @@ export const sidebarLinks: SidebarNavItem[] = [
       { href: "/dashboard", icon: "dashboard", title: "Dashboard" },
       { href: "/dashboard/nodes", icon: "dashboard", title: "Nodes" },
       { href: "/dashboard/members", icon: "lineChart", title: "Members" },
+      { href: "/dashboard/joining", icon: "lineChart", title: "Joining Keys" },
       { href: "/dashboard/services", icon: "lineChart", title: "Services" },
       { href: "/dashboard/routes", icon: "lineChart", title: "Routing table" },
       { href: "/dashboard/firewall", icon: "lineChart", title: "Firewall" },
