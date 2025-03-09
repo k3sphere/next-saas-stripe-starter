@@ -66,11 +66,10 @@ export const PUT = auth(async (req) => {
     expectedOrigin: "https://k3sphere.com",    // Change for production
     expectedRPID: "k3sphere.com",
   });
-  delete challengeStore[currentUser.id!];
   if (verification.verified) {
     // save key to database
     console.log(body, challengeStore[currentUser.id!].userId);
-    prisma.key.create({
+    await prisma.key.create({
       data: {
         userId: currentUser.id!,
         name: challengeStore[currentUser.id!].userId,
@@ -83,6 +82,8 @@ export const PUT = auth(async (req) => {
         counter: counter,
       },
     });
+
+    delete challengeStore[currentUser.id!];
     return NextResponse.json({ success: true });
   } else {
     return NextResponse.json({ success: false }, { status: 400 });
