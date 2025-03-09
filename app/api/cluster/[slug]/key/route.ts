@@ -35,13 +35,13 @@ export const PUT = auth(async (req) => {
       return new Response("Invalid user", { status: 401 });
     }
   const body = await req.json();
-
+  console.log(body);
   // Step 1: Verify the registration response
   const verification = await verifyRegistrationResponse({
     response: body,
     expectedChallenge: "some-challenge-stored", // Replace with actual challenge stored during the initial request
-    expectedOrigin: "http://localhost:3000",    // Change for production
-    expectedRPID: "localhost",
+    expectedOrigin: "https://k3sphere.com",    // Change for production
+    expectedRPID: "k3sphere.com",
   });
 
   if (verification.verified) {
