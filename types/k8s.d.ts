@@ -49,6 +49,7 @@ export interface Cluster {
   role: string | null;
   apiKey: string | null;
   network: string | null;
+  keyType: string | null;
   createdAt: Date;
   color?: string | null;
   updatedAt: Date;

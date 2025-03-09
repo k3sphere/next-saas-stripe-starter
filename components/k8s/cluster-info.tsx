@@ -106,9 +106,13 @@ export function ClusterInfo() {
         </TableCell>
         </TableRow>
         <TableRow>
-        <TableCell className="text-right">
+        <TableCell className="text-left">
+          Passkey
+        </TableCell>
+        <TableCell className="text-left">
+          {!cluster?.keyType && 
           <Register />
-          
+    }
         </TableCell>
       </TableRow>
     </TableBody>
