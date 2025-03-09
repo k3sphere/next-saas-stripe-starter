@@ -20,6 +20,7 @@ export const POST = auth(async (req) => {
     userName: currentUser.name!,
     attestationType: "none",
   });
+  console.log(options);
   return new Response(JSON.stringify(options), { status: 200 });
 });
 
