@@ -231,6 +231,8 @@ model Key {
   keyType   String   @map("key_type") @db.VarChar(20)
   keyId     String   @map("key_id") @db.VarChar(100)
   userId    String
+  counter   Int?     @default(0)
+  clusterId String?  @map(name: "cluster_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
   deletedAt DateTime? @map("deleted_at")

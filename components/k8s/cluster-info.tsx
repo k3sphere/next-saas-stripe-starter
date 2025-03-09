@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import Register from "./register";
 
 export function ClusterInfo() {
   const [cluster, setCluster] = useState<Cluster|null>(null)
@@ -106,7 +107,7 @@ export function ClusterInfo() {
         </TableRow>
         <TableRow>
         <TableCell className="text-right">
-          connect to cluster using the commandline below
+          <Register />
           
         </TableCell>
       </TableRow>
