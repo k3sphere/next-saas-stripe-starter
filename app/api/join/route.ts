@@ -73,13 +73,13 @@ export const POST = auth(async (req) => {
   
       const foundServers = joiningKey.cluster.relays;
       const url = foundServers.map((srv) => srv.relay.url).join(",");
-  
+      const tags = joiningKey.tags;
       await prisma.machine.upsert({where: {
           id: id,
         },create: {
-          id,ip,name,port,clusterId, username: username?username:"",platform
+          id,ip,name,port,clusterId, username: username?username:"",platform,tags
          },update: {
-          ip,name,port,clusterId, username: username?username:"",platform
+          ip,name,port,clusterId, username: username?username:"",platform,tags
         }})
   
       return new NextResponse(JSON.stringify({

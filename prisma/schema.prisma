@@ -168,6 +168,7 @@ model Machine {
   username          String
   ip                String
   platform          String?
+  tags      String[]
   gatewayId         String?  @map(name: "gateway_id")
   createdAt         DateTime @default(now()) @map(name: "created_at")
   updatedAt         DateTime @default(now()) @map(name: "updated_at")
