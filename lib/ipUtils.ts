@@ -58,3 +58,15 @@ export function getStartIpFromCidr(cidr: string): string {
 
     return numberToIp(startIpNum);
 }
+
+export function getLastIpFromCidr(cidr: string): string {
+    const [baseIp, prefixLength] = cidr.split('/');
+    const baseIpNum = ipToNumber(baseIp);
+    const subnetMask = ~((1 << (32 - parseInt(prefixLength, 10))) - 1);
+    const broadcastAddress = baseIpNum | ~subnetMask;
+    // Subtract 1 from the broadcast address to get the last usable IP address
+    const lastIpNum = broadcastAddress - 1;
+
+    return numberToIp(lastIpNum);
+}
+

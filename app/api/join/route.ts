@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 
 import { prisma } from "@/lib/db";
-import { getNextIpFromCidr, getStartIpFromCidr } from "@/lib/ipUtils";
+import { getLastIpFromCidr, getNextIpFromCidr, getStartIpFromCidr } from "@/lib/ipUtils";
 
 
 export const POST = auth(async (req) => {
@@ -63,12 +63,14 @@ export const POST = auth(async (req) => {
       });
   
       let ip;
+      const gateway = getStartIpFromCidr(cidr);
+      const host = getLastIpFromCidr(cidr);
       if (maxIpMachine) {
           const maxIp = maxIpMachine.ip;
           ip = getNextIpFromCidr(cidr, maxIp);
       } else {
           // If no machines found, start with the first IP in the CIDR range
-          ip = getStartIpFromCidr(cidr);
+          ip = getNextIpFromCidr(cidr,gateway);
       }
   
       const foundServers = joiningKey.cluster.relays;
@@ -85,6 +87,8 @@ export const POST = auth(async (req) => {
       return new NextResponse(JSON.stringify({
           ip,
           subnet:cidr,
+          gateway: gateway,
+          host: host,
           relay: url,
           vlan: joiningKey.cluster.apiKey,
           tags: joiningKey.tags,
