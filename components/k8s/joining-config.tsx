@@ -23,7 +23,7 @@ import useCluster from "@/hooks/use-cluster";
 import exp from "constants";
 
 interface MemberProps {
-  config: Pick<JoiningKey, "id" | "name" | "purpose" | "max" | "counter" | "expireDate" | "key">;
+  config: Pick<JoiningKey, "id" | "name" | "purpose" | "max" | "counter" | "expireDate" | "key" | "subnet" | "tags">;
   params: {
     lang: string;
   };
@@ -42,6 +42,10 @@ const FormSchema = z.object({
   expireDate: z.date().nullable(),
   key: z.string(),
   tags: z.array(z.string()).optional(), // Add tags field
+  subnet: z.string().regex(
+    /^([0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2}$/,
+    "Invalid CIDR subnet format"
+  ), // Add cidrSubnet field
 });
 
 export function JoiningConfig({ config, params: { lang } }: MemberProps) {
@@ -54,6 +58,7 @@ export function JoiningConfig({ config, params: { lang } }: MemberProps) {
       expireDate: config.expireDate ? new Date(config.expireDate) : null,
       key: config.key ?? "",
       tags: [], // default value for tags
+      subnet: "", // default value for cidrSubnet
     },
     resolver: zodResolver(FormSchema),
   });
@@ -131,6 +136,25 @@ export function JoiningConfig({ config, params: { lang } }: MemberProps) {
                           value={field.value?.join(", ") || ""}
                           onChange={(e) => field.onChange(e.target.value.split(",").map(tag => tag.trim()))}
                         />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          </CardContent>
+          <CardContent className="w-2/3 space-y-6">
+            <div className="w/full grid items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <FormField
+                  control={form.control}
+                  name="subnet"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Subnet</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g., 192.168.1.0/24" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

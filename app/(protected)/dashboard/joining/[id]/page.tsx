@@ -24,6 +24,8 @@ async function getMemberForCluster(id: string,  userId: User["id"]) {
       counter: true,
       clusterId: true,
       key: true,
+      tags: true,
+      subnet: true,
     }
   });
   if (!result) {
@@ -63,7 +65,7 @@ export default async function EditorMemberPage({
   }
 
   // console.log("EditorClusterPage user:" + user.id + "params:", params);
-  const cluster = params.id === "new" ? {id: "", name: "", purpose: "", max:0, counter:0, expireDate: null, key: ""} : await getMemberForCluster( params.id, user.id);
+  const cluster = params.id === "new" ? {id: "", name: "", purpose: "", max:0, counter:0, expireDate: null, key: "",tags:[],subnet:""} : await getMemberForCluster( params.id, user.id);
 
   if (!cluster) {
     notFound();

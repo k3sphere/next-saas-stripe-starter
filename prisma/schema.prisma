@@ -251,6 +251,7 @@ model JoiningKey {
   purpose   String
   counter   Int  @default(0)
   tags      String[]
+  subnet    String?
   expireDate DateTime? @map(name: "expire_date")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")

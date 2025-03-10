@@ -46,6 +46,8 @@ export interface JoiningKey {
   counter:  number | null
   expireDate: Date | null
   key:    string | null
+  tags:   string[] | null
+  subnet: string | null
 }
 
 export interface Cluster {
