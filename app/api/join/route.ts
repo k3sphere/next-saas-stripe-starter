@@ -26,6 +26,7 @@ export const POST = auth(async (req) => {
                   name: true,
                   cidr: true,
                   apiKey: true,
+                  passKey: true,
                   relays: {
                       select: {
                           id: true,
@@ -92,6 +93,7 @@ export const POST = auth(async (req) => {
           relay: url,
           vlan: joiningKey.cluster.apiKey,
           tags: joiningKey.tags,
+          trust: joiningKey.cluster.passKey,
       }), { status: 200 });
     }else {
       return new NextResponse('Unauthorized', { status: 401 });
