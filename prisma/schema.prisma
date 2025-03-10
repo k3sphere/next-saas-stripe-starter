@@ -164,19 +164,14 @@ model Machine {
   id                String   @id
   clusterId         String   @map(name: "cluster_id")
   name              String
-  vlan              String
   port              Int
   username          String
   ip                String
   platform          String?
-  publicIp          String?  @map(name: "public_ip")
   gatewayId         String?  @map(name: "gateway_id")
   createdAt         DateTime @default(now()) @map(name: "created_at")
   updatedAt         DateTime @default(now()) @map(name: "updated_at")
   delete            Boolean? @default(false)
-  // Define self-referencing relation
-  gateway           Machine? @relation(name: "MachineGateway", fields: [gatewayId], references: [id], onDelete: Cascade)
-  machines          Machine[] @relation(name: "MachineGateway")
   cluster           K8sCluster @relation(fields: [clusterId], references: [id], onDelete: Cascade)
   @@map(name: "machines")
 }
