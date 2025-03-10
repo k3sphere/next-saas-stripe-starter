@@ -1,4 +1,3 @@
-import IPCIDR from 'ip-cidr';
 
 /**
  * Convert an IP address to a number.
